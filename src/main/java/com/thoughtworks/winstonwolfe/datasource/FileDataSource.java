@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class FileDataSource {
+public class FileDataSource implements DataSource {
 
     private String key;
     private String filename;
@@ -16,6 +16,7 @@ public class FileDataSource {
         this.filename = config.get(key);
     }
 
+    @Override
     public String getData() {
         try {
             return new Scanner(new File(filename)).useDelimiter("\\Z").next();

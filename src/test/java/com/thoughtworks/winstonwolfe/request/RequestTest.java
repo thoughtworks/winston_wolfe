@@ -17,7 +17,7 @@ public class RequestTest {
         when(dataSource.getData()).thenReturn("DATA");
         ServiceEndPoint endPoint = mock(ServiceEndPoint.class);
 
-        new Request(dataSource).sendTo(endPoint);
+//        new Request(dataSource).sendTo(endPoint);
 
         verify(endPoint).send("DATA");
     }

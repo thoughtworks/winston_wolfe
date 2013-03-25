@@ -1,11 +1,14 @@
-import com.thoughtworks.winstonwolfe.runner.WinstonWolfe;
+import com.thoughtworks.winstonwolfe.application.WinstonWolfe;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Scanner;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -14,9 +17,12 @@ import static org.xmlmatchers.transform.XmlConverters.the;
 public class RequestResponseTest {
     MockSystemUnderTest mockSUT;
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
     @Before
     public void spinUpServer() throws Exception {
-        mockSUT = new MockSystemUnderTest("<h1>Dood! I ARE NOT VALID</h1>");
+        mockSUT = new MockSystemUnderTest(getResourceFileContents("xml/out.xml"));
         mockSUT.startServer();
     }
 
@@ -25,33 +31,31 @@ public class RequestResponseTest {
         mockSUT.stopServer();
     }
 
-    public String getResourceFileContents(String filename) throws IOException {
-        URL url = getClass().getResource(filename);
-
-        InputStream fis;
-        BufferedReader br;
-        String line;
-        StringBuilder fileContents = new StringBuilder();
-
-        fis = new FileInputStream(url.getPath());
-        br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
-        while ((line = br.readLine()) != null) {
-            fileContents.append(line);
-        }
-
-        return fileContents.toString();
-    }
-
     @Test
     public void theInputXmlWillBeSentToTheEndpoint() throws Exception {
         String resourcesPath = "src/integration_tests/resources/";
-        WinstonWolfe.main(new String[]{resourcesPath + "yaml/config.yaml", resourcesPath + "yaml/testScript.yaml"});
+        WinstonWolfe.main(new String[]{resourcesPath + "yaml/config.yaml", resourcesPath + "yaml/passingTestScript.yaml"});
 
         assertThat(mockSUT.getLastRequest(), is(getResourceFileContents("xml/in.xml")));
     }
 
-    @Test(expected = Exception.class)
+    @Test
+    public void noErrorIsRaisedWhenTheResponseIsCorrect() throws Exception {
+        String resourcesPath = "src/integration_tests/resources/";
+        WinstonWolfe.main(new String[]{resourcesPath + "yaml/config.yaml", resourcesPath + "yaml/passingTestScript.yaml"});
+    }
+
+    @Test
     public void anExceptionIsThrownWhenResponseIsNotCorrect() throws Exception {
-//        WinstonWolfe.main(new String[]{"./yaml/config.yaml", "./yaml/testScript.yaml"});
+        expectedException.expect(RuntimeException.class);
+
+        String resourcesPath = "src/integration_tests/resources/";
+        WinstonWolfe.main(new String[]{resourcesPath + "yaml/config.yaml", resourcesPath + "yaml/failingTestScript.yaml"});
+    }
+
+    private String getResourceFileContents(String filename) throws IOException {
+        URL url = getClass().getResource(filename);
+
+        return new Scanner(new File(url.getPath())).useDelimiter("\\Z").next();
     }
 }

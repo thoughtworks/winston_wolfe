@@ -1,6 +1,8 @@
 package com.thoughtworks.winstonwolfe.endpoint;
 
-import org.apache.http.client.ClientProtocolException;
+import com.thoughtworks.winstonwolfe.datasource.StringDataSource;
+import com.thoughtworks.winstonwolfe.request.Request;
+import com.thoughtworks.winstonwolfe.response.Response;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
@@ -9,7 +11,6 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 public class HttpServiceEndPoint implements ServiceEndPoint {
 
@@ -24,15 +25,16 @@ public class HttpServiceEndPoint implements ServiceEndPoint {
     }
 
     @Override
-    public void send(String data) throws IOException {
+    public Response send(String data) throws IOException {
         HttpClient client = new DefaultHttpClient();
 
         HttpPost post = new HttpPost(url);
         post.setEntity(new StringEntity(data));
 
-        client.execute(post);
-//            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-//            responseHandler.
+        ResponseHandler<String> responseHandler = new BasicResponseHandler();
 
+        String responseData = client.execute(post, responseHandler);
+
+        return new Response(new StringDataSource(responseData));
     }
 }

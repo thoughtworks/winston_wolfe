@@ -37,8 +37,6 @@ public class FileDataSourceTest {
 
     @Test
     public void shouldReturnDataFromFile() throws IOException {
-
-
         String fileName = createTmpFile("HERE IS SOME DATA");
 
         YamlConfig config = mock(YamlConfig.class);
