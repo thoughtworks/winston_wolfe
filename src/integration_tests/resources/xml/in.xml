@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+        <ns0:ServiceabilityLevel5 xmlns:ns0="http://Med_Lib_Service/2007/06/30/interfaces/FeasibilityManagerService">
+            <ServiceabilityLevel5Request>
+                <UserID>D277414</UserID>
+                <PropertyAddress>
+                    <Id>161343103</Id>
+                </PropertyAddress>
+                <NetworkTelephoneNumber>
+                    <TelephoneNumber>0394720998</TelephoneNumber>
+                </NetworkTelephoneNumber>
+                <ResourceFacingServiceSpecAvailability>
+                    <ResourceFacingServiceSpecComposite>
+                        <CommonName>Calling</CommonName>
+                    </ResourceFacingServiceSpecComposite>
+                </ResourceFacingServiceSpecAvailability>
+            </ServiceabilityLevel5Request>
+        </ns0:ServiceabilityLevel5>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

@@ -1,0 +1,3 @@
+---
+request: /Users/rboucher/projects/winston_wolfe/src/integration_tests/resources/xml/in.xml
+response: out.xml

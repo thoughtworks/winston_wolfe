@@ -1,4 +1,7 @@
 winston_wolfe
 =============
 
-A best-of-breed, harm-minimisation testing tool 
+A best-of-breed, harm-minimisation testing tool in Java
+
+
+
