@@ -1,0 +1,5 @@
+request: ../../xml/in.xml
+response_selectors:
+  - ../../selectors/responseNotFound.yaml
+response_expect:
+  is_available: [EXISTS]

@@ -1,0 +1,1 @@
+is_available: /SOAP-ENV:Envelope/SOAP-ENV:Body/bwns:ServiceabilityLevel5Response/ServiceabilityLevel5Response/IsAvailable

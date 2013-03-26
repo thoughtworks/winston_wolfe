@@ -76,6 +76,13 @@ public class YamlConfigTest {
         assertThat(yamlConfig.getFile("file"), is(expectedFile));
     }
 
+    @Test
+    public void shouldReturnTryIfKeyExists() throws IOException {
+        YamlConfig yamlConfig = new YamlConfig(createTmpFile("foo: bar").getPath());
+        assertThat(yamlConfig.exists("foo"), is(true));
+        assertThat(yamlConfig.exists("herp"), is(false));
+    }
+
     private File createTmpFile(String content) throws IOException {
         File tmp = File.createTempFile("yaml", null);
         PrintWriter writer = new PrintWriter((tmp));

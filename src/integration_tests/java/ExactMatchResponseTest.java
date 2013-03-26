@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.xmlmatchers.transform.XmlConverters.the;
 
-public class RequestResponseTest {
+public class ExactMatchResponseTest {
     MockSystemUnderTest mockSUT;
 
     @Rule
@@ -32,19 +32,9 @@ public class RequestResponseTest {
     }
 
     @Test
-    public void theInputXmlWillBeSentToTheEndpoint() throws Exception {
-        URL config = getClass().getResource("yaml/config.yaml");
-        URL script = getClass().getResource("yaml/passingTestScript.yaml");
-
-        WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
-
-        assertThat(mockSUT.getLastRequest(), is(getResourceFileContents("xml/in.xml")));
-    }
-
-    @Test
     public void noErrorIsRaisedWhenTheResponseIsCorrect() throws Exception {
         URL config = getClass().getResource("yaml/config.yaml");
-        URL script = getClass().getResource("yaml/passingTestScript.yaml");
+        URL script = getClass().getResource("yaml/exactMatch/passingTestScript.yaml");
 
         WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
     }
@@ -54,7 +44,7 @@ public class RequestResponseTest {
         expectedException.expect(RuntimeException.class);
 
         URL config = getClass().getResource("yaml/config.yaml");
-        URL script = getClass().getResource("yaml/failingTestScript.yaml");
+        URL script = getClass().getResource("yaml/exactMatch/failingTestScript.yaml");
 
         WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
     }

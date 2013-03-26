@@ -23,8 +23,8 @@ public class ExactMatchValidatorTest {
         when(actual.getData()).thenReturn("I ARE ACTUAL");
         when(expected.getData()).thenReturn("I ARE EXPECTED");
 
-        ExactMatchValidator validator = new ExactMatchValidator();
-        validator.validate(actual, expected);
+        ExactMatchValidator validator = new ExactMatchValidator(expected);
+        validator.validateAgainst(actual);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class ExactMatchValidatorTest {
         when(actual.getData()).thenReturn("WE ARE THE SAME");
         when(expected.getData()).thenReturn("WE ARE THE SAME");
 
-        ExactMatchValidator validator = new ExactMatchValidator();
-        validator.validate(actual, expected);
+        ExactMatchValidator validator = new ExactMatchValidator(expected);
+        validator.validateAgainst(actual);
     }
 }

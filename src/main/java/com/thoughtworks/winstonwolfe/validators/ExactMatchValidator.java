@@ -2,8 +2,14 @@ package com.thoughtworks.winstonwolfe.validators;
 
 import com.thoughtworks.winstonwolfe.datasource.DataSource;
 
-public class ExactMatchValidator {
-    public void validate(DataSource actual, DataSource expected) {
+public class ExactMatchValidator implements ResponseValidator {
+    private final DataSource expected;
+
+    public ExactMatchValidator(DataSource expected) {
+        this.expected = expected;
+    }
+
+    public void validateAgainst(DataSource actual) {
         String actualResponseData = actual.getData();
         String expectedResponseData = expected.getData();
 

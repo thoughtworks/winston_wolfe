@@ -44,4 +44,8 @@ public class YamlConfig {
     public File getFile(String key) {
         return new File(pathToConfiguration.concat("/" + get(key)));
     }
+
+    public Boolean exists(String key) {
+        return map.containsKey(key);
+    }
 }
