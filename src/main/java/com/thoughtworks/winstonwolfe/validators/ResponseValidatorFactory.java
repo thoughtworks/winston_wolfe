@@ -24,8 +24,8 @@ public class ResponseValidatorFactory {
 
         if (hasResponse) {
             return new ExactMatchValidator(new FileDataSource("response", config));
+        } else {
+            return new SelectorMatchValidator();
         }
-
-        return new SelectorMatchValidator();
     }
 }
