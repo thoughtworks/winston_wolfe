@@ -1,10 +1,8 @@
 package com.thoughtworks.winstonwolfe.endpoint;
 
+import com.thoughtworks.winstonwolfe.datasource.DataSource;
 import com.thoughtworks.winstonwolfe.datasource.StringDataSource;
-import com.thoughtworks.winstonwolfe.request.Request;
-import com.thoughtworks.winstonwolfe.response.Response;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -25,16 +23,14 @@ public class HttpServiceEndPoint implements ServiceEndPoint {
     }
 
     @Override
-    public Response send(String data) throws IOException {
+    public DataSource send(DataSource dataSource) throws IOException {
         HttpClient client = new DefaultHttpClient();
 
         HttpPost post = new HttpPost(url);
-        post.setEntity(new StringEntity(data));
+        post.setEntity(new StringEntity(dataSource.getData()));
 
-        ResponseHandler<String> responseHandler = new BasicResponseHandler();
+        String responseData = client.execute(post, new BasicResponseHandler());
 
-        String responseData = client.execute(post, responseHandler);
-
-        return new Response(new StringDataSource(responseData));
+        return new StringDataSource(responseData);
     }
 }

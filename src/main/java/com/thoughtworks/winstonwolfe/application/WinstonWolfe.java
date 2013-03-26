@@ -1,11 +1,10 @@
 package com.thoughtworks.winstonwolfe.application;
 
 import com.thoughtworks.winstonwolfe.config.YamlConfig;
+import com.thoughtworks.winstonwolfe.datasource.DataSource;
 import com.thoughtworks.winstonwolfe.datasource.FileDataSource;
 import com.thoughtworks.winstonwolfe.endpoint.EndPointFactory;
 import com.thoughtworks.winstonwolfe.endpoint.ServiceEndPoint;
-import com.thoughtworks.winstonwolfe.request.Request;
-import com.thoughtworks.winstonwolfe.response.Response;
 import com.thoughtworks.winstonwolfe.runner.CommandLineArguments;
 import com.thoughtworks.winstonwolfe.validators.ExactMatchValidator;
 
@@ -18,19 +17,17 @@ public class WinstonWolfe {
 
         YamlConfig scriptConfig = new YamlConfig(arguments.getPathToTestScript());
         FileDataSource requestDataSource = new FileDataSource("request", scriptConfig);
-        FileDataSource responseDataSource = new FileDataSource("response", scriptConfig);
+        FileDataSource expectedResponseDataSource = new FileDataSource("response", scriptConfig);
 
-        Request request = new Request(requestDataSource);
-        Response expectedResponse = new Response(responseDataSource);
+//        Request request = new Request(requestDataSource);
+//        Response expectedResponse = new Response(responseDataSource);
 
         ServiceEndPoint endPoint = endPointFactory.buildEndPoint();
 
-//      request.sendTo(endPoint);
-//        response.getFrom(endPoint) ??
-
-        Response actualResponse = endPoint.send(request.getDataSource().getData());
+//        Response actualResponse = endPoint.send(request.getDataSource().getData());
+        DataSource actualResponseDataSource = endPoint.send(requestDataSource);
 
         ExactMatchValidator validator = new ExactMatchValidator();
-        validator.validate(actualResponse, expectedResponse);
+        validator.validate(actualResponseDataSource, expectedResponseDataSource);
     }
 }
