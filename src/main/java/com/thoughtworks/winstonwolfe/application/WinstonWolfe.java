@@ -19,12 +19,8 @@ public class WinstonWolfe {
         FileDataSource requestDataSource = new FileDataSource("request", scriptConfig);
         FileDataSource expectedResponseDataSource = new FileDataSource("response", scriptConfig);
 
-//        Request request = new Request(requestDataSource);
-//        Response expectedResponse = new Response(responseDataSource);
-
         ServiceEndPoint endPoint = endPointFactory.buildEndPoint();
 
-//        Response actualResponse = endPoint.send(request.getDataSource().getData());
         DataSource actualResponseDataSource = endPoint.send(requestDataSource);
 
         ExactMatchValidator validator = new ExactMatchValidator();
