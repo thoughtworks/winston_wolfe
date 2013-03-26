@@ -10,14 +10,23 @@ import java.util.Map;
 
 public class YamlConfig {
     private Map<String, String> map;
+    private String pathToConfiguration;
 
-    public YamlConfig(String pathToConfiguration) throws FileNotFoundException {
-        InputStream input = new FileInputStream(new File(pathToConfiguration));
-        Yaml yaml = new Yaml();
+    public YamlConfig(String pathToConfigurationFile) throws FileNotFoundException {
         try {
+            File configurationFile = new File(pathToConfigurationFile);
+
+            pathToConfiguration = configurationFile.getParentFile().getPath();
+
+            InputStream input = new FileInputStream(configurationFile);
+            Yaml yaml = new Yaml();
+
             map = (Map<String, String>) yaml.load(input);
+
+        } catch (NullPointerException e) {
+            throw new FileNotFoundException(String.format("The file '%s' could not be found", pathToConfigurationFile));
         } catch (ClassCastException e) {
-            throw new RuntimeException(String.format("[%s] could not be parsed to a Map", pathToConfiguration), e);
+            throw new RuntimeException(String.format("[%s] could not be parsed to a Map", pathToConfigurationFile), e);
         }
     }
 
@@ -30,5 +39,9 @@ public class YamlConfig {
             throw new RuntimeException(String.format("No %s specified in yaml", key));
         }
         return map.get(key);
+    }
+
+    public File getFile(String key) {
+        return new File(pathToConfiguration.concat("/" + get(key)));
     }
 }

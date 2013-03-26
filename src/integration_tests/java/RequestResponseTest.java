@@ -33,24 +33,30 @@ public class RequestResponseTest {
 
     @Test
     public void theInputXmlWillBeSentToTheEndpoint() throws Exception {
-        String resourcesPath = "src/integration_tests/resources/";
-        WinstonWolfe.main(new String[]{resourcesPath + "yaml/config.yaml", resourcesPath + "yaml/passingTestScript.yaml"});
+        URL config = getClass().getResource("yaml/config.yaml");
+        URL script = getClass().getResource("yaml/passingTestScript.yaml");
+
+        WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
 
         assertThat(mockSUT.getLastRequest(), is(getResourceFileContents("xml/in.xml")));
     }
 
     @Test
     public void noErrorIsRaisedWhenTheResponseIsCorrect() throws Exception {
-        String resourcesPath = "src/integration_tests/resources/";
-        WinstonWolfe.main(new String[]{resourcesPath + "yaml/config.yaml", resourcesPath + "yaml/passingTestScript.yaml"});
+        URL config = getClass().getResource("yaml/config.yaml");
+        URL script = getClass().getResource("yaml/passingTestScript.yaml");
+
+        WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
     }
 
     @Test
     public void anExceptionIsThrownWhenResponseIsNotCorrect() throws Exception {
         expectedException.expect(RuntimeException.class);
 
-        String resourcesPath = "src/integration_tests/resources/";
-        WinstonWolfe.main(new String[]{resourcesPath + "yaml/config.yaml", resourcesPath + "yaml/failingTestScript.yaml"});
+        URL config = getClass().getResource("yaml/config.yaml");
+        URL script = getClass().getResource("yaml/failingTestScript.yaml");
+
+        WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
     }
 
     private String getResourceFileContents(String filename) throws IOException {

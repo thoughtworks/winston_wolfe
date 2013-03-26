@@ -23,36 +23,23 @@ public class FileDataSourceTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void shouldComplainIfFileDoesNotExist() throws FileNotFoundException {
-
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Unable to find key file named I DO NOT EXIST");
-
-        YamlConfig config = mock(YamlConfig.class);
-        when(config.get("key")).thenReturn("I DO NOT EXIST");
-
-        FileDataSource dataSource = new FileDataSource("key", config);
-        dataSource.getData();
-    }
-
-    @Test
     public void shouldReturnDataFromFile() throws IOException {
-        String fileName = createTmpFile("HERE IS SOME DATA");
+        File file = createTmpFile("HERE IS SOME DATA");
 
         YamlConfig config = mock(YamlConfig.class);
-        when(config.get("key")).thenReturn(fileName);
+        when(config.getFile("key")).thenReturn(file);
 
         FileDataSource dataSource = new FileDataSource("key", config);
         assertThat(dataSource.getData(), is("HERE IS SOME DATA"));
     }
 
-    private String createTmpFile(String content) throws IOException {
+    private File createTmpFile(String content) throws IOException {
         File tmp = File.createTempFile("yaml", null);
         PrintWriter writer = new PrintWriter((tmp));
 
         writer.print(content);
         writer.close();
-        return tmp.getPath();
+        return tmp;
     }
 
 }

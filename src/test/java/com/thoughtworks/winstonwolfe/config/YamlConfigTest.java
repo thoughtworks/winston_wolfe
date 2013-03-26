@@ -19,19 +19,22 @@ public class YamlConfigTest {
     public ExpectedException expectedException = ExpectedException.none();
 
 
-    @Test(expected = FileNotFoundException.class)
+    @Test
     public void shouldThrowExceptionWhenFileNotFound() throws FileNotFoundException {
+        expectedException.expect(FileNotFoundException.class);
+        expectedException.expectMessage("The file 'does_not_exist.yaml' could not be found");
+
         new YamlConfig("does_not_exist.yaml");
     }
 
     @Test(expected = org.yaml.snakeyaml.parser.ParserException.class)
     public void shouldThrowExceptionWhenFileIsNotValidYaml() throws IOException {
-        new YamlConfig(createTmpFile("{this: is: invalid: yaml:}"));
+        new YamlConfig(createTmpFile("{this: is: invalid: yaml:}").getPath());
     }
 
     @Test
     public void shouldThrowExceptionWhenYamlDoesNotParseAMap() throws IOException {
-        String fileName = createTmpFile("- this is not a map");
+        String fileName = createTmpFile("- this is not a map").getPath();
         try {
             new YamlConfig(fileName);
         } catch (RuntimeException r) {
@@ -41,24 +44,44 @@ public class YamlConfigTest {
 
     @Test
     public void shouldAllowLookupOfKey() throws IOException {
-        YamlConfig yamlConfig = new YamlConfig(createTmpFile("foo: bar"));
+        YamlConfig yamlConfig = new YamlConfig(createTmpFile("foo: bar").getPath());
         assertThat(yamlConfig.get("foo"), is("bar"));
     }
 
     @Test
-    public void shouldComplainIfTryToLookupMisingKey() throws IOException {
+    public void shouldComplainIfTryToLookupMissingKey() throws IOException {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("No missing specified in yaml");
-        YamlConfig yamlConfig = new YamlConfig(createTmpFile("foo: bar"));
+        YamlConfig yamlConfig = new YamlConfig(createTmpFile("foo: bar").getPath());
         assertThat(yamlConfig.get("missing"), is("bar"));
     }
 
-    private String createTmpFile(String content) throws IOException {
+    @Test
+    public void shouldGetTheLocationOfTheFileAtKeyWithoutSlash() throws IOException {
+        File tmpFile = createTmpFile("file: here.txt");
+        YamlConfig yamlConfig = new YamlConfig(tmpFile.getPath());
+
+        File expectedFile = new File(tmpFile.getParentFile().getPath() + "/" + "here.txt");
+
+        assertThat(yamlConfig.getFile("file"), is(expectedFile));
+    }
+
+    @Test
+    public void shouldGetTheLocationOfTheFileAtKeyWithSlash() throws IOException {
+        File tmpFile = createTmpFile("file: /here.txt");
+        YamlConfig yamlConfig = new YamlConfig(tmpFile.getPath());
+
+        File expectedFile = new File(tmpFile.getParentFile().getPath() + "/" + "here.txt");
+
+        assertThat(yamlConfig.getFile("file"), is(expectedFile));
+    }
+
+    private File createTmpFile(String content) throws IOException {
         File tmp = File.createTempFile("yaml", null);
         PrintWriter writer = new PrintWriter((tmp));
 
         writer.print(content);
         writer.close();
-        return tmp.getPath();
+        return tmp;
     }
 }

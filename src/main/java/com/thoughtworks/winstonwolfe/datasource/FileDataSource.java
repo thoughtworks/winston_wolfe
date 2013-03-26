@@ -9,19 +9,19 @@ import java.util.Scanner;
 public class FileDataSource implements DataSource {
 
     private String key;
-    private String filename;
+    private File file;
 
     public FileDataSource(String key, YamlConfig config) {
         this.key = key;
-        this.filename = config.get(key);
+        this.file = config.getFile(key);
     }
 
     @Override
     public String getData() {
         try {
-            return new Scanner(new File(filename)).useDelimiter("\\Z").next();
+            return new Scanner(file).useDelimiter("\\Z").next();
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(String.format("Unable to find %s file named %s", key, filename), e);
+            throw new RuntimeException(String.format("Unable to find %s file named %s", key, file), e);
         }
     }
 }
