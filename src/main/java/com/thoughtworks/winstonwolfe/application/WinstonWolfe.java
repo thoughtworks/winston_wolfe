@@ -6,7 +6,6 @@ import com.thoughtworks.winstonwolfe.datasource.FileDataSource;
 import com.thoughtworks.winstonwolfe.endpoint.EndPointFactory;
 import com.thoughtworks.winstonwolfe.endpoint.ServiceEndPoint;
 import com.thoughtworks.winstonwolfe.runner.CommandLineArguments;
-import com.thoughtworks.winstonwolfe.validators.ExactMatchValidator;
 import com.thoughtworks.winstonwolfe.validators.ResponseValidatorFactory;
 
 public class WinstonWolfe {

@@ -1,6 +1,7 @@
 package com.thoughtworks.winstonwolfe.datasource;
 
 import com.thoughtworks.winstonwolfe.config.YamlConfig;
+import org.w3c.dom.Document;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,5 +24,11 @@ public class FileDataSource implements DataSource {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(String.format("Unable to find %s file named %s", key, file), e);
         }
+    }
+
+    @Override
+    public Document getDocument() {
+        //TODO: implement me
+        return null;
     }
 }

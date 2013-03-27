@@ -2,46 +2,42 @@ package com.thoughtworks.winstonwolfe.validators;
 
 import com.sun.deploy.util.StringUtils;
 import com.thoughtworks.winstonwolfe.datasource.DataSource;
-import org.xml.sax.InputSource;
+import org.w3c.dom.Document;
 
-import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
-import java.io.StringReader;
+import javax.xml.xpath.XPathFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class SelectorMatchValidator implements ResponseValidator {
     private final Map<String, String> expectations;
-    private final Map<String, XPathExpression> selectors;
+    private final Map<String, String> selectors;
 
-    public SelectorMatchValidator(Map<String, XPathExpression> selectors, Map<String, String> expectations) {
+    public SelectorMatchValidator(Map<String, String> selectors, Map<String, String> expectations) {
         this.selectors = selectors;
         this.expectations = expectations;
-    }
-
-    public SelectorMatchValidator() {
-        this.selectors = null;
-        this.expectations = null;
     }
 
     @Override
     public void validateAgainst(DataSource actualResponseDataSource) {
         List<String> validationFailures = new ArrayList<String>();
 
-        for (String key : expectations.keySet()) {
-            InputSource inputSource = new InputSource(new StringReader(actualResponseDataSource.getData()));
+        Document document = actualResponseDataSource.getDocument();
+        XPath xpath = XPathFactory.newInstance().newXPath();
 
+        for (String key : expectations.keySet()) {
             try {
                 String expectedValue = expectations.get(key);
 
-                XPathExpression selector = selectors.get(key);
+                String selector = selectors.get(key);
                 if (selector == null) {
                     validationFailures.add(String.format("Expected '%s' to be '%s' but no selector called '%s' was supplied", key, expectedValue, key));
                     continue;
                 }
 
-                String result = selector.evaluate(inputSource);
+                String result = xpath.evaluate(selector, document);
                 if (result.isEmpty()) {
                     validationFailures.add(String.format("The Xpath identified as '%s' does not exist in the response", key));
                     continue;
@@ -51,6 +47,7 @@ public class SelectorMatchValidator implements ResponseValidator {
                 }
             } catch (XPathExpressionException e) {
                 e.printStackTrace();
+                validationFailures.add(String.format("The xpath '%s' is not valid. Refer to the horrible stack trace on the console.", key));
             }
         }
 
