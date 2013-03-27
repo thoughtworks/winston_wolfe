@@ -1,5 +1,5 @@
 request: ../../xml/in.xml
 response_selectors:
-  - ../../selectors/response.yaml
+  is_available: /*:Envelope/*:Body/*:ServiceabilityLevel5Response/ServiceabilityLevel5Response/IsAvailable
 response_expectations:
   is_available: Y

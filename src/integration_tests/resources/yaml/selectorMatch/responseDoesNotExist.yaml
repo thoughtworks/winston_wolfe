@@ -1,5 +1,5 @@
 request: ../../xml/in.xml
 response_selectors:
-  - ../../selectors/responseNotFound.yaml
+  is_available: /this/xpath/is/not/in/the/response/document
 response_expect:
   is_available: [EXISTS]

@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class TestRunner {
     public static final String REQUEST = "request";
-    private Map<String, String> config;
+    private Map<String, Object> config;
 
     public TestRunner(YamlConfig scriptConfig, EndPointFactory endPointFactory) throws IOException {
         this.config = scriptConfig.getMap();
@@ -19,7 +19,7 @@ public class TestRunner {
             throw new RuntimeException("Test Script does not contain a 'request' document.");
         }
 
-        getFileContents(config.get(REQUEST));
+        getFileContents((String) config.get(REQUEST));
     }
 
     public String getFileContents(String filename) throws IOException {

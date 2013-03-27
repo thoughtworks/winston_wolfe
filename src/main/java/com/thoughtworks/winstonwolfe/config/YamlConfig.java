@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.util.Map;
 
 public class YamlConfig {
-    private Map<String, String> map;
+    private Map<String, Object> map;
     private String pathToConfiguration;
 
     public YamlConfig(String pathToConfigurationFile) throws FileNotFoundException {
@@ -21,7 +21,7 @@ public class YamlConfig {
             InputStream input = new FileInputStream(configurationFile);
             Yaml yaml = new Yaml();
 
-            map = (Map<String, String>) yaml.load(input);
+            map = (Map<String, Object>) yaml.load(input);
 
         } catch (NullPointerException e) {
             throw new FileNotFoundException(String.format("The file '%s' could not be found", pathToConfigurationFile));
@@ -30,7 +30,7 @@ public class YamlConfig {
         }
     }
 
-    public Map<String, String> getMap() {
+    public Map<String, Object> getMap() {
         return map;
     }
 
@@ -38,7 +38,14 @@ public class YamlConfig {
         if (!map.containsKey(key)) {
             throw new RuntimeException(String.format("No %s specified in yaml", key));
         }
-        return map.get(key);
+        return (String) map.get(key);
+    }
+
+    public Map<String, String> getKeyValueMap(String key) {
+        if (!map.containsKey(key)) {
+            throw new RuntimeException(String.format("No %s specified in yaml", key));
+        }
+        return (Map<String, String>) map.get(key);
     }
 
     public File getFile(String key) {

@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class EndPointFactory {
 
-    private Map<String, String> config;
+    private Map<String, Object> config;
 
     public EndPointFactory(YamlConfig config) {
         this.config = config.getMap();
@@ -16,7 +16,7 @@ public class EndPointFactory {
         if( !config.containsKey("endpoint")) {
             throw new RuntimeException("No endpoint specified in Config") ;
         }
-        return new HttpServiceEndPoint(config.get("endpoint"));
+        return new HttpServiceEndPoint((String) config.get("endpoint"));
     }
 
 }

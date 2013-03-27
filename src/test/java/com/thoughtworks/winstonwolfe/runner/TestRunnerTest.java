@@ -24,7 +24,7 @@ public class TestRunnerTest {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("Test Script does not contain a 'request' document.");
 
-        Map<String, String> fakeConfig = new HashMap<String, String>();
+        Map<String, Object> fakeConfig = new HashMap<String, Object>();
 
         YamlConfig config = mock(YamlConfig.class);
         when(config.getMap()).thenReturn(fakeConfig);
@@ -38,7 +38,7 @@ public class TestRunnerTest {
     public void itShouldComplainIfTheRequestDocumentIsNotFound() throws IOException {
         expectedException.expect(FileNotFoundException.class);
 
-        Map<String, String> fakeConfig = new HashMap<String, String>();
+        Map<String, Object> fakeConfig = new HashMap<String, Object>();
         fakeConfig.put("request", "does_not_exist");
 
         YamlConfig config = mock(YamlConfig.class);

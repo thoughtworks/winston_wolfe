@@ -4,11 +4,13 @@ import com.thoughtworks.winstonwolfe.config.YamlConfig;
 import com.thoughtworks.winstonwolfe.endpoint.EndPointFactory;
 import com.thoughtworks.winstonwolfe.endpoint.HttpServiceEndPoint;
 import com.thoughtworks.winstonwolfe.endpoint.ServiceEndPoint;
+import com.thoughtworks.winstonwolfe.selectors.SelectorFactory;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import javax.swing.text.html.HTMLDocument;
+import javax.xml.xpath.XPathExpression;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +18,7 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ResponseValidatorFactoryTest {

@@ -20,13 +20,13 @@ public class WinstonWolfe {
         YamlConfig scriptConfig = new YamlConfig(arguments.getPathToTestScript());
         FileDataSource requestDataSource = new FileDataSource("request", scriptConfig);
 
+        ResponseValidatorFactory factory = new ResponseValidatorFactory(scriptConfig);
+
 
 
 
         ServiceEndPoint endPoint = endPointFactory.buildEndPoint();
         DataSource actualResponseDataSource = endPoint.send(requestDataSource);
-
-        ResponseValidatorFactory factory = new ResponseValidatorFactory(scriptConfig);
         factory.buildValidator().validateAgainst(actualResponseDataSource);
     }
 }

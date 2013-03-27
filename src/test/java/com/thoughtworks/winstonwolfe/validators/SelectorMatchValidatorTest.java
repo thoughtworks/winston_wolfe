@@ -11,7 +11,9 @@ import javax.xml.xpath.XPathFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.junit.matchers.JUnitMatchers.containsString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -57,9 +59,6 @@ public class SelectorMatchValidatorTest {
 
     @Test
     public void shouldComplainIfDocumentHasNoContentMatchingASelector() throws XPathExpressionException {
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("The Xpath identified as 'hobby' does not exist in the response");
-
         String response = "<data><details><name>Perryn</name><sex>M</sex></details></data>";
         DataSource dataSource = mock(DataSource.class);
         when(dataSource.getData()).thenReturn(response);
@@ -71,7 +70,14 @@ public class SelectorMatchValidatorTest {
         expectations.put("hobby", "Philately");
 
         SelectorMatchValidator validator = new SelectorMatchValidator(selectors, expectations);
-        validator.validateAgainst(dataSource);
+        try {
+            validator.validateAgainst(dataSource);
+            fail("Should have thrown an exception");
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage(), containsString("The Xpath identified as 'hobby' does not exist in the response"));
+            assertThat(e.getMessage(), not(containsString("Expected 'Philately' for 'hobby' but found ''")));
+        }
+
     }
 
     @Test
@@ -96,17 +102,18 @@ public class SelectorMatchValidatorTest {
         SelectorMatchValidator validator = new SelectorMatchValidator(selectors, expectations);
         try {
             validator.validateAgainst(dataSource);
+            fail("Should have thrown an exception");
         } catch (RuntimeException e) {
             assertThat(e.getMessage(), containsString("Expected 'Ryan' for 'name' but found 'Perryn'"));
             assertThat(e.getMessage(), containsString("Expected 'xpath construction' for 'hobby' but found 'philately'"));
-            assertThat(e.getMessage(), containsString("The Xpath identified as 'tuesday' does not exist in the response"));
+            assertThat(e.getMessage(), containsString("The Xpath identified as 'thursday' does not exist in the response"));
         }
     }
 
     @Test
     public void shouldComplainWhenExpectationMatcherCanNotBeFound() throws XPathExpressionException {
         expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Expected 'name' to be 'Ryan' but no selector called 'name' was supplied");
+        expectedException.expectMessage("Expected 'sex' to be 'M' but no selector called 'sex' was supplied");
 
         String response = "<data><details><name>Perryn</name><sex>M</sex><hobby>philately</hobby></details></data>";
         DataSource dataSource = mock(DataSource.class);

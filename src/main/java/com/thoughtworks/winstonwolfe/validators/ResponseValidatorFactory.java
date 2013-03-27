@@ -2,6 +2,11 @@ package com.thoughtworks.winstonwolfe.validators;
 
 import com.thoughtworks.winstonwolfe.config.YamlConfig;
 import com.thoughtworks.winstonwolfe.datasource.FileDataSource;
+import com.thoughtworks.winstonwolfe.selectors.SelectorFactory;
+
+import javax.xml.xpath.XPathExpression;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class ResponseValidatorFactory {
 
@@ -25,7 +30,11 @@ public class ResponseValidatorFactory {
         if (hasResponse) {
             return new ExactMatchValidator(new FileDataSource("response", config));
         } else {
-            return new SelectorMatchValidator();
+            //TODO this is not unit tested very well - revisit design?
+            Map<String, String> selectors = config.getKeyValueMap("response_selectors");
+            Map<String, String> response_expectations = config.getKeyValueMap("response_expectations");
+            Map<String, XPathExpression> xpathSelectors = new SelectorFactory().buildSelectors(selectors);
+            return new SelectorMatchValidator(xpathSelectors, response_expectations);
         }
     }
 }

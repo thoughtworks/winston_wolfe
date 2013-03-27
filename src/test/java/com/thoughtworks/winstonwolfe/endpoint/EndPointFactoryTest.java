@@ -22,7 +22,7 @@ public class EndPointFactoryTest {
 
     @Test
     public void shouldBuildHttpServiceEndpoint() throws FileNotFoundException {
-        Map<String, String> fakeConfig = new HashMap<String, String>();
+        Map<String, Object> fakeConfig = new HashMap<String, Object>();
         fakeConfig.put("endpoint", "http://foo.com");
 
         YamlConfig config = mock(YamlConfig.class);
@@ -40,7 +40,7 @@ public class EndPointFactoryTest {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("No endpoint specified in Config");
 
-        Map<String, String> fakeConfig = new HashMap<String, String>();
+        Map<String, Object> fakeConfig = new HashMap<String, Object>();
         fakeConfig.put("derp", "herp");
 
         YamlConfig config = mock(YamlConfig.class);
