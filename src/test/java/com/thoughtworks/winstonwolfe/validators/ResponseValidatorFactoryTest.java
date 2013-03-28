@@ -1,24 +1,17 @@
 package com.thoughtworks.winstonwolfe.validators;
 
+import com.thoughtworks.winstonwolfe.config.WinstonConfig;
 import com.thoughtworks.winstonwolfe.config.YamlConfig;
-import com.thoughtworks.winstonwolfe.endpoint.EndPointFactory;
-import com.thoughtworks.winstonwolfe.endpoint.HttpServiceEndPoint;
-import com.thoughtworks.winstonwolfe.endpoint.ServiceEndPoint;
-import com.thoughtworks.winstonwolfe.selectors.SelectorFactory;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import javax.swing.text.html.HTMLDocument;
-import javax.xml.xpath.XPathExpression;
 import java.util.HashMap;
-import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ResponseValidatorFactoryTest {
@@ -27,7 +20,7 @@ public class ResponseValidatorFactoryTest {
 
     @Test
     public void shouldCreateExactMatchValidatorIfConfigSpecifiesAResponseFile() {
-        YamlConfig config = mock(YamlConfig.class);
+        WinstonConfig config = mock(WinstonConfig.class);
         when(config.exists("response")).thenReturn(true);
 
         ResponseValidatorFactory factory = new ResponseValidatorFactory(config);
@@ -40,7 +33,7 @@ public class ResponseValidatorFactoryTest {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("Either response or response_selectors should be specified in the test script.");
 
-        YamlConfig config = mock(YamlConfig.class);
+        WinstonConfig config = mock(WinstonConfig.class);
         when(config.exists("response")).thenReturn(false);
         when(config.exists("response_selectors")).thenReturn(false);
 
@@ -53,7 +46,7 @@ public class ResponseValidatorFactoryTest {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("Only response or response_selectors can be specified in the test script, not both.");
 
-        YamlConfig config = mock(YamlConfig.class);
+        WinstonConfig config = mock(WinstonConfig.class);
         when(config.exists("response")).thenReturn(true);
         when(config.exists("response_selectors")).thenReturn(true);
 
@@ -63,9 +56,13 @@ public class ResponseValidatorFactoryTest {
 
     @Test
     public void shouldCreateSelectorMatchValidatorIfConfigDoesNotSpecifyAResponseFile() {
-        YamlConfig config = mock(YamlConfig.class);
+        WinstonConfig config = mock(WinstonConfig.class);
+        WinstonConfig subConfig = mock(WinstonConfig.class);
         when(config.exists("response")).thenReturn(false);
         when(config.exists("response_selectors")).thenReturn(true);
+        when(config.getSubConfig("response_expectations")).thenReturn(subConfig);
+        when(config.getSubConfig("response_selectors")).thenReturn(subConfig);
+        when(subConfig.getFlatStringMap()).thenReturn(new HashMap<String, String>());
 
         ResponseValidatorFactory factory = new ResponseValidatorFactory(config);
         ResponseValidator validator = factory.buildValidator();

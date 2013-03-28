@@ -1,22 +1,17 @@
 package com.thoughtworks.winstonwolfe.endpoint;
 
-import com.thoughtworks.winstonwolfe.config.YamlConfig;
-
-import java.util.Map;
+import com.thoughtworks.winstonwolfe.config.WinstonConfig;
 
 public class EndPointFactory {
 
-    private Map<String, Object> config;
+    private WinstonConfig config;
 
-    public EndPointFactory(YamlConfig config) {
-        this.config = config.getMap();
+    public EndPointFactory(WinstonConfig config) {
+        this.config = config;
     }
 
     public ServiceEndPoint buildEndPoint() {
-        if( !config.containsKey("endpoint")) {
-            throw new RuntimeException("No endpoint specified in Config") ;
-        }
-        return new HttpServiceEndPoint((String) config.get("endpoint"));
+        return new HttpServiceEndPoint(config.getString("endpoint"));
     }
 
 }

@@ -1,6 +1,6 @@
 package com.thoughtworks.winstonwolfe.datasource;
 
-import com.thoughtworks.winstonwolfe.config.YamlConfig;
+import com.thoughtworks.winstonwolfe.config.WinstonConfig;
 import org.w3c.dom.Document;
 
 import java.io.File;
@@ -12,7 +12,7 @@ public class FileDataSource implements DataSource {
     private String key;
     private File file;
 
-    public FileDataSource(String key, YamlConfig config) {
+    public FileDataSource(String key, WinstonConfig config) {
         this.key = key;
         this.file = config.getFile(key);
     }

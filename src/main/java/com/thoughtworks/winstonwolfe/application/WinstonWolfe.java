@@ -1,6 +1,8 @@
 package com.thoughtworks.winstonwolfe.application;
 
+import com.thoughtworks.winstonwolfe.config.WinstonConfig;
 import com.thoughtworks.winstonwolfe.config.YamlConfig;
+import com.thoughtworks.winstonwolfe.config.YamlConfigLoader;
 import com.thoughtworks.winstonwolfe.datasource.DataSource;
 import com.thoughtworks.winstonwolfe.datasource.FileDataSource;
 import com.thoughtworks.winstonwolfe.endpoint.EndPointFactory;
@@ -12,17 +14,14 @@ public class WinstonWolfe {
     public static void main(final String[] args) throws Exception {
         CommandLineArguments arguments = new CommandLineArguments(args);
 
-        YamlConfig endpointConfig = new YamlConfig(arguments.getPathToConfiguration());
+        WinstonConfig endpointConfig = new YamlConfigLoader().load(arguments.getPathToConfiguration());
 
         EndPointFactory endPointFactory = new EndPointFactory(endpointConfig);
 
-        YamlConfig scriptConfig = new YamlConfig(arguments.getPathToTestScript());
+        WinstonConfig scriptConfig = new YamlConfigLoader().load(arguments.getPathToTestScript());
         FileDataSource requestDataSource = new FileDataSource("request", scriptConfig);
 
         ResponseValidatorFactory factory = new ResponseValidatorFactory(scriptConfig);
-
-
-
 
         ServiceEndPoint endPoint = endPointFactory.buildEndPoint();
         DataSource actualResponseDataSource = endPoint.send(requestDataSource);

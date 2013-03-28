@@ -36,6 +36,14 @@ public class SelectorMatchResponseTest {
     }
 
     @Test
+    public void selectorMatchIncludesSelectorsInFiles() throws Exception {
+        URL config = getClass().getResource("yaml/config.yaml");
+        URL script = getClass().getResource("yaml/selectorMatch/responseSelectorInExternalFile.yaml");
+
+        WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
+    }
+
+    @Test
     public void selectorMatchFails() throws Exception {
         expectedException.expect(RuntimeException.class);
 

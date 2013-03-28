@@ -1,5 +1,6 @@
 package com.thoughtworks.winstonwolfe.datasource;
 
+import com.thoughtworks.winstonwolfe.config.WinstonConfig;
 import com.thoughtworks.winstonwolfe.config.YamlConfig;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,7 +27,7 @@ public class FileDataSourceTest {
     public void shouldReturnDataFromFile() throws IOException {
         File file = createTmpFile("HERE IS SOME DATA");
 
-        YamlConfig config = mock(YamlConfig.class);
+        WinstonConfig config = mock(WinstonConfig.class);
         when(config.getFile("key")).thenReturn(file);
 
         FileDataSource dataSource = new FileDataSource("key", config);

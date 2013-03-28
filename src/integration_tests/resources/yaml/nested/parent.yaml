@@ -1,0 +1,5 @@
+sub_config_node:
+  import_files:
+     - child_1.yaml
+     - child_with_child.yaml
+  key: value

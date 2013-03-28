@@ -1,5 +1,6 @@
 package com.thoughtworks.winstonwolfe.validators;
 
+import com.thoughtworks.winstonwolfe.config.WinstonConfig;
 import com.thoughtworks.winstonwolfe.config.YamlConfig;
 import com.thoughtworks.winstonwolfe.datasource.FileDataSource;
 
@@ -7,9 +8,9 @@ import java.util.Map;
 
 public class ResponseValidatorFactory {
 
-    private final YamlConfig config;
+    private final WinstonConfig config;
 
-    public ResponseValidatorFactory(YamlConfig config) {
+    public ResponseValidatorFactory(WinstonConfig config) {
         this.config = config;
     }
 
@@ -27,8 +28,8 @@ public class ResponseValidatorFactory {
         if (hasResponse) {
             return new ExactMatchValidator(new FileDataSource("response", config));
         } else {
-            Map<String, String> selectors = config.getKeyValueMap("response_selectors");
-            Map<String, String> response_expectations = config.getKeyValueMap("response_expectations");
+            Map<String, String> selectors = config.getSubConfig("response_selectors").getFlatStringMap();
+            Map<String, String> response_expectations = config.getSubConfig("response_expectations").getFlatStringMap();;
             return new SelectorMatchValidator(selectors, response_expectations);
         }
     }

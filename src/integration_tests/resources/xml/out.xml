@@ -8,6 +8,8 @@
                                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                                           xmlns:qu="http://telstra.oss.fal/ManageServiceQualification.xsd">
                 <IsAvailable>Y</IsAvailable>
+                <IsTaken>N</IsTaken>
+                <IsRenewable>Y</IsRenewable>
             </ServiceabilityLevel5Response>
         </bwns:ServiceabilityLevel5Response>
     </SOAP-ENV:Body>
