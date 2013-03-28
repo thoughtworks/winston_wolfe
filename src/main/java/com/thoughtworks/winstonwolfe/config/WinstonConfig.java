@@ -6,15 +6,11 @@ import java.util.Map;
 
 public interface WinstonConfig {
 
-    String getString(String key);
-
-    List<String> getList(String key);
-
-    WinstonConfig getSubConfig(String key);
-
-    File getFile(String key);
-
     Boolean exists(String key);
+    String getString(String key);
+    List<String> getList(String key);
+    File getFile(String key);
+    WinstonConfig getSubConfig(String key);
 
     Map<String, Object> getMap();
     Map<String,String> getFlatStringMap();
