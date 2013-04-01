@@ -1,7 +1,6 @@
 package com.thoughtworks.winstonwolfe.validators;
 
 import com.thoughtworks.winstonwolfe.config.WinstonConfig;
-import com.thoughtworks.winstonwolfe.config.YamlConfig;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

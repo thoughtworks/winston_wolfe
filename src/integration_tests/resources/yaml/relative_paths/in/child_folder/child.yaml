@@ -1,0 +1,3 @@
+import_files:
+  - ../grand_child.yaml
+in_child: a1

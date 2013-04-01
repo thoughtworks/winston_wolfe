@@ -1,7 +1,6 @@
 package com.thoughtworks.winstonwolfe.validators;
 
 import com.thoughtworks.winstonwolfe.config.WinstonConfig;
-import com.thoughtworks.winstonwolfe.config.YamlConfig;
 import com.thoughtworks.winstonwolfe.datasource.FileDataSource;
 
 import java.util.Map;

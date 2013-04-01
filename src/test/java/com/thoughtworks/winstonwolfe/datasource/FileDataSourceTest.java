@@ -1,17 +1,13 @@
 package com.thoughtworks.winstonwolfe.datasource;
 
 import com.thoughtworks.winstonwolfe.config.WinstonConfig;
-import com.thoughtworks.winstonwolfe.config.YamlConfig;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;

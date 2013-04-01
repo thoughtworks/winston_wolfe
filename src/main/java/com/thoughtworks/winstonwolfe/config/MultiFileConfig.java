@@ -25,7 +25,7 @@ public class MultiFileConfig extends SimpleConfig {
         try {
             return new MultiFileConfig((Map<String, Object>) typeSafeGet(key, Map.class), basePath, loader);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(String.format("Couldn't find file referenced by configuration key '%s'",key), e);
+            throw new RuntimeException(String.format("Couldn't find file '%s' referenced by configuration key '%s'", e.getMessage(), key), e);
         }
     }
 }

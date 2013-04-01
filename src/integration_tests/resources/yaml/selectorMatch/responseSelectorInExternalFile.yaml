@@ -1,8 +1,8 @@
 request: ../../xml/in.xml
 response_selectors:
   import_files:
-     - ../selectors/noNamespaceXpathSelector.yaml
-     - ../selectors/anotherNoNamespaceXpathSelector.yaml
+     - ../../selectors/noNamespaceXpathSelector.yaml
+     - ../../selectors/anotherNoNamespaceXpathSelector.yaml
   is_renewable: /Envelope/Body/ServiceabilityLevel5Response/ServiceabilityLevel5Response/IsRenewable
 response_expectations:
   is_available: Y

@@ -98,9 +98,22 @@ public class MultiFileConfigTest {
         config.getSubConfig("foo");
     }
 
-
     @Test
-    public void shouldFindFilesUsingCorrectRelativePaths() {
-        fail("You cant test this here it relies on behaviour of the loader");
+    public void shouldThrowABetterErrorWhenAFileCantBeFound() throws FileNotFoundException {
+        expectedException.expect(RuntimeException.class);
+        expectedException.expectMessage("Couldn't find file 'basePath/path/to/non-existent/file (No such file or directory)' referenced by configuration key 'response_selectors'");
+
+        List<String> file_names = new ArrayList<String>();
+        file_names.add("path/to/non-existent/file");
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> subMap = new HashMap<String, Object>();
+        map.put("response_selectors", subMap);
+        subMap.put("import_files", file_names);
+
+        ConfigLoader loader = new YamlConfigLoader();
+
+        MultiFileConfig config = new MultiFileConfig(map, "basePath", loader);
+        config.getSubConfig("response_selectors");
     }
 }

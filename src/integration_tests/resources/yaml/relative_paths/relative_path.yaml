@@ -1,0 +1,4 @@
+sub_config_node:
+  import_files:
+     - in/child_folder/child.yaml
+  key: value

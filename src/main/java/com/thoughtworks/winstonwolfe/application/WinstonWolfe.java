@@ -1,7 +1,6 @@
 package com.thoughtworks.winstonwolfe.application;
 
 import com.thoughtworks.winstonwolfe.config.WinstonConfig;
-import com.thoughtworks.winstonwolfe.config.YamlConfig;
 import com.thoughtworks.winstonwolfe.config.YamlConfigLoader;
 import com.thoughtworks.winstonwolfe.datasource.DataSource;
 import com.thoughtworks.winstonwolfe.datasource.FileDataSource;
