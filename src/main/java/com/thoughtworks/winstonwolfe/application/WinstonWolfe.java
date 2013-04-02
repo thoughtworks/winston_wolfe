@@ -19,7 +19,7 @@ public class WinstonWolfe {
         NamedEndPointFactory namedEndPointFactory = new NamedEndPointFactory(endpointConfig);
         ScriptEndPointFactory scriptEndPointFactory = new ScriptEndPointFactory(scriptConfig, namedEndPointFactory);
 
-        FileDataSource requestDataSource = new FileDataSource("request", scriptConfig);
+        FileDataSource requestDataSource = new FileDataSource("read", scriptConfig);
 
         ResponseValidatorFactory factory = new ResponseValidatorFactory(scriptConfig);
 
