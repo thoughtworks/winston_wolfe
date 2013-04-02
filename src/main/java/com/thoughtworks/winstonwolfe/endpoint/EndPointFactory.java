@@ -10,8 +10,7 @@ public class EndPointFactory {
         this.config = config;
     }
 
-    public ServiceEndPoint buildEndPoint() {
-        return new HttpServiceEndPoint(config.getString("endpoint"));
+    public ServiceEndPoint buildEndPoint(String endpoint) {
+        return new HttpServiceEndPoint(config.getString(endpoint));
     }
-
 }

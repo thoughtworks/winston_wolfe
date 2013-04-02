@@ -46,6 +46,7 @@ public class SelectorMatchResponseTest {
     @Test
     public void selectorMatchFails() throws Exception {
         expectedException.expect(RuntimeException.class);
+        expectedException.expectMessage("The Xpath identified as 'is_available' does not exist in the response");
 
         URL config = getClass().getResource("yaml/config.yaml");
         URL script = getClass().getResource("yaml/selectorMatch/responseDoesNotExist.yaml");

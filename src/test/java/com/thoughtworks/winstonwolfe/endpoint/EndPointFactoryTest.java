@@ -19,11 +19,11 @@ public class EndPointFactoryTest {
 
     @Test
     public void shouldBuildHttpServiceEndpoint() throws FileNotFoundException {
-        WinstonConfig config = mock(WinstonConfig.class);
-        when(config.getString("endpoint")).thenReturn("http://foo.com");
+        WinstonConfig endpointConfig = mock(WinstonConfig.class);
+        when(endpointConfig.getString("jetty_service")).thenReturn("http://foo.com");
 
-        EndPointFactory factory = new EndPointFactory(config);
-        ServiceEndPoint serviceEndPoint = factory.buildEndPoint();
+        EndPointFactory factory = new EndPointFactory(endpointConfig);
+        ServiceEndPoint serviceEndPoint = factory.buildEndPoint("jetty_service");
         assertThat(serviceEndPoint, is(instanceOf(HttpServiceEndPoint.class)));
         HttpServiceEndPoint httpServiceEndPoint =  (HttpServiceEndPoint) serviceEndPoint;
         assertThat(httpServiceEndPoint.getUrl(), is("http://foo.com"));

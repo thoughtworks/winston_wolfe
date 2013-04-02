@@ -1,2 +1,3 @@
 request: ../../xml/in.xml
+send_to: jetty_service
 response: ../../xml/out.xml

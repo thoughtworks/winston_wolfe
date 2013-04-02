@@ -42,6 +42,7 @@ public class ExactMatchResponseTest {
     @Test
     public void anExceptionIsThrownWhenResponseIsNotCorrect() throws Exception {
         expectedException.expect(RuntimeException.class);
+        expectedException.expectMessage("The expected response did not match the actual response.");
 
         URL config = getClass().getResource("yaml/config.yaml");
         URL script = getClass().getResource("yaml/exactMatch/failingTestScript.yaml");

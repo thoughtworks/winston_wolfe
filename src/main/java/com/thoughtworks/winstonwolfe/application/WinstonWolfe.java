@@ -22,7 +22,7 @@ public class WinstonWolfe {
 
         ResponseValidatorFactory factory = new ResponseValidatorFactory(scriptConfig);
 
-        ServiceEndPoint endPoint = endPointFactory.buildEndPoint();
+        ServiceEndPoint endPoint = endPointFactory.buildEndPoint(scriptConfig.getString("send_to"));
         DataSource actualResponseDataSource = endPoint.send(requestDataSource);
         factory.buildValidator().validateAgainst(actualResponseDataSource);
     }

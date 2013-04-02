@@ -1,4 +1,5 @@
 request: ../../xml/in.xml
+send_to: jetty_service
 response_selectors:
   import_files:
      - ../../selectors/noNamespaceXpathSelector.yaml

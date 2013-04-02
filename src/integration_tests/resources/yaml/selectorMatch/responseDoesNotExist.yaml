@@ -1,5 +1,6 @@
 request: ../../xml/in.xml
+send_to: jetty_service
 response_selectors:
   is_available: /this/xpath/is/not/in/the/response/document
-response_expect:
-  is_available: [EXISTS]
+response_expectations:
+  is_available: Y
