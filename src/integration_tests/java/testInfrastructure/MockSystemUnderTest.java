@@ -45,12 +45,10 @@ public class MockSystemUnderTest extends AbstractHandler  {
     }
 
     public static void main(final String[] args) throws Exception {
-        File responseFile = new File(args[1]);
+        File responseFile = new File("/Users/rboucher/projects/winston_wolfe/src/examples/US4274/Available/OP.xml");
         String response = new Scanner(responseFile).useDelimiter("\\Z").next();
         MockSystemUnderTest system = new MockSystemUnderTest(response);
         system.startServer();
         system.server.join();
     }
-
-
 }
