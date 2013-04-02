@@ -1,6 +1,9 @@
+package testInfrastructure;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
+import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -8,7 +11,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
-class MockSystemUnderTest extends AbstractHandler  {
+public class MockSystemUnderTest extends AbstractHandler  {
     private String cannedResponse = "";
     private String lastRequest = "No requests received yet.";
     private Server server;
@@ -40,4 +43,14 @@ class MockSystemUnderTest extends AbstractHandler  {
     public String getLastRequest() {
         return lastRequest;
     }
+
+    public static void main(final String[] args) throws Exception {
+        File responseFile = new File(args[1]);
+        String response = new Scanner(responseFile).useDelimiter("\\Z").next();
+        MockSystemUnderTest system = new MockSystemUnderTest(response);
+        system.startServer();
+        system.server.join();
+    }
+
+
 }

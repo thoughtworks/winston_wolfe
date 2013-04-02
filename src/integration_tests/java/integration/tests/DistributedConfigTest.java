@@ -1,3 +1,5 @@
+package integration.tests;
+
 import com.thoughtworks.winstonwolfe.config.WinstonConfig;
 import com.thoughtworks.winstonwolfe.config.YamlConfigLoader;
 import org.junit.Rule;
@@ -16,7 +18,7 @@ public class DistributedConfigTest {
 
     @Test
     public void shouldLoadUpConfigAndNestedFiles() throws FileNotFoundException {
-        URL config = getClass().getResource("yaml/nested/parent.yaml");
+        URL config = ClassLoader.getSystemResource("yaml/nested/parent.yaml");
 
         WinstonConfig loadedConfig = new YamlConfigLoader().load(config.getPath());
 
@@ -30,7 +32,7 @@ public class DistributedConfigTest {
 
     @Test
     public void shouldFindFilesUsingCorrectRelativePaths() throws FileNotFoundException {
-        URL config = getClass().getResource("yaml/relative_paths/relative_path.yaml");
+        URL config = ClassLoader.getSystemResource("yaml/relative_paths/relative_path.yaml");
 
         WinstonConfig loadedConfig = new YamlConfigLoader().load(config.getPath());
 

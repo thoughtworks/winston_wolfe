@@ -1,9 +1,12 @@
+package integration.tests;
+
 import com.thoughtworks.winstonwolfe.application.WinstonWolfe;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import testInfrastructure.MockSystemUnderTest;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,16 +32,16 @@ public class SelectorMatchResponseTest {
 
     @Test
     public void selectorMatchPasses() throws Exception {
-        URL config = getClass().getResource("yaml/config.yaml");
-        URL script = getClass().getResource("yaml/selectorMatch/responseExistsScript.yaml");
+        URL config = ClassLoader.getSystemResource("yaml/config.yaml");
+        URL script = ClassLoader.getSystemResource("yaml/selectorMatch/responseExistsScript.yaml");
 
         WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
     }
 
     @Test
     public void selectorMatchIncludesSelectorsInFiles() throws Exception {
-        URL config = getClass().getResource("yaml/config.yaml");
-        URL script = getClass().getResource("yaml/selectorMatch/responseSelectorInExternalFile.yaml");
+        URL config = ClassLoader.getSystemResource("yaml/config.yaml");
+        URL script = ClassLoader.getSystemResource("yaml/selectorMatch/responseSelectorInExternalFile.yaml");
 
         WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
     }
@@ -48,15 +51,15 @@ public class SelectorMatchResponseTest {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("The Xpath identified as 'is_available' does not exist in the response");
 
-        URL config = getClass().getResource("yaml/config.yaml");
-        URL script = getClass().getResource("yaml/selectorMatch/responseDoesNotExist.yaml");
+        URL config = ClassLoader.getSystemResource("yaml/config.yaml");
+        URL script = ClassLoader.getSystemResource("yaml/selectorMatch/responseDoesNotExist.yaml");
 
         WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
     }
 
 
     private String getResourceFileContents(String filename) throws IOException {
-        URL url = getClass().getResource(filename);
+        URL url = ClassLoader.getSystemResource(filename);
 
         return new Scanner(new File(url.getPath())).useDelimiter("\\Z").next();
     }

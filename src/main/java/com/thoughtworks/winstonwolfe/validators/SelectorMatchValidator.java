@@ -1,6 +1,5 @@
 package com.thoughtworks.winstonwolfe.validators;
 
-import com.sun.deploy.util.StringUtils;
 import com.thoughtworks.winstonwolfe.datasource.DataSource;
 import org.w3c.dom.Document;
 
@@ -8,6 +7,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +52,7 @@ public class SelectorMatchValidator implements ResponseValidator {
         }
 
         if (!validationFailures.isEmpty()) {
-            throw new RuntimeException(StringUtils.join(validationFailures, "\n"));
+            throw new RuntimeException(Arrays.toString(validationFailures.toArray()));
         }
     }
 }
