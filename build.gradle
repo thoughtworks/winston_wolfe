@@ -1,0 +1,25 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceSets {
+    integrationTest {
+        java.srcDir('src/integration_tests/java')
+        resources.srcDir('src/integration_tests/resources')
+    }
+}
+
+dependencies {
+   compile fileTree(dir: 'lib/runtime', include: '*.jar')
+   testCompile fileTree(dir: 'lib/test', include: '*.jar')
+
+   integrationTestCompile sourceSets.main.output
+   integrationTestCompile fileTree(dir: 'lib/test', include: '*.jar')
+   integrationTestCompile fileTree(dir: 'lib/integration_test', include: '*.jar')
+}
+
+task integrationTest(type:Test) {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath += sourceSets.integrationTest.runtimeClasspath
+}
+
+mainClassName = 'com.thoughtworks.winstonwolfe.application.WinstonWolfe'
