@@ -13,7 +13,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class EndPointFactoryTest {
+public class NamedEndPointFactoryTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
@@ -22,7 +22,7 @@ public class EndPointFactoryTest {
         WinstonConfig endpointConfig = mock(WinstonConfig.class);
         when(endpointConfig.getString("jetty_service")).thenReturn("http://foo.com");
 
-        EndPointFactory factory = new EndPointFactory(endpointConfig);
+        NamedEndPointFactory factory = new NamedEndPointFactory(endpointConfig);
         ServiceEndPoint serviceEndPoint = factory.buildEndPoint("jetty_service");
         assertThat(serviceEndPoint, is(instanceOf(HttpServiceEndPoint.class)));
         HttpServiceEndPoint httpServiceEndPoint =  (HttpServiceEndPoint) serviceEndPoint;
