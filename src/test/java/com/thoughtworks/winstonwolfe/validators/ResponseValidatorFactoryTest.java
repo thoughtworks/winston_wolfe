@@ -20,7 +20,7 @@ public class ResponseValidatorFactoryTest {
     @Test
     public void shouldCreateExactMatchValidatorIfConfigSpecifiesAResponseFile() {
         WinstonConfig config = mock(WinstonConfig.class);
-        when(config.exists("response")).thenReturn(true);
+        when(config.exists("compare_response_to")).thenReturn(true);
 
         ResponseValidatorFactory factory = new ResponseValidatorFactory(config);
         ResponseValidator validator = factory.buildValidator();
@@ -30,10 +30,10 @@ public class ResponseValidatorFactoryTest {
     @Test
     public void shouldComplainIfNeitherResponseFileOrSelectorFilesAreSpecified() {
         expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Either response or response_selectors should be specified in the test script.");
+        expectedException.expectMessage("Either compare_response_to or response_selectors should be specified in the test script.");
 
         WinstonConfig config = mock(WinstonConfig.class);
-        when(config.exists("response")).thenReturn(false);
+        when(config.exists("compare_response_to")).thenReturn(false);
         when(config.exists("response_selectors")).thenReturn(false);
 
         ResponseValidatorFactory factory = new ResponseValidatorFactory(config);
@@ -43,10 +43,10 @@ public class ResponseValidatorFactoryTest {
     @Test
     public void shouldComplainIfBothResponseFileOrSelectorFilesAreSpecified() {
         expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Only response or response_selectors can be specified in the test script, not both.");
+        expectedException.expectMessage("Only compare_response_to or response_selectors can be specified in the test script, not both.");
 
         WinstonConfig config = mock(WinstonConfig.class);
-        when(config.exists("response")).thenReturn(true);
+        when(config.exists("compare_response_to")).thenReturn(true);
         when(config.exists("response_selectors")).thenReturn(true);
 
         ResponseValidatorFactory factory = new ResponseValidatorFactory(config);
@@ -57,7 +57,7 @@ public class ResponseValidatorFactoryTest {
     public void shouldCreateSelectorMatchValidatorIfConfigDoesNotSpecifyAResponseFile() {
         WinstonConfig config = mock(WinstonConfig.class);
         WinstonConfig subConfig = mock(WinstonConfig.class);
-        when(config.exists("response")).thenReturn(false);
+        when(config.exists("compare_response_to")).thenReturn(false);
         when(config.exists("response_selectors")).thenReturn(true);
         when(config.getSubConfig("response_expectations")).thenReturn(subConfig);
         when(config.getSubConfig("response_selectors")).thenReturn(subConfig);

@@ -14,18 +14,18 @@ public class ResponseValidatorFactory {
     }
 
     public ResponseValidator buildValidator() {
-        boolean hasResponse = config.exists("response");
+        boolean hasResponse = config.exists("compare_response_to");
         boolean hasResponseSelector = config.exists("response_selectors");
 
         if (hasResponse && hasResponseSelector) {
-            throw new RuntimeException("Only response or response_selectors can be specified in the test script, not both.");
+            throw new RuntimeException("Only compare_response_to or response_selectors can be specified in the test script, not both.");
         }
         if (!hasResponse && !hasResponseSelector) {
-            throw new RuntimeException("Either response or response_selectors should be specified in the test script.");
+            throw new RuntimeException("Either compare_response_to or response_selectors should be specified in the test script.");
         }
 
         if (hasResponse) {
-            return new ExactMatchValidator(new FileDataSource("response", config));
+            return new ExactMatchValidator(new FileDataSource("compare_response_to", config));
         } else {
             Map<String, String> selectors = config.getSubConfig("response_selectors").getFlatStringMap();
             Map<String, String> response_expectations = config.getSubConfig("response_expectations").getFlatStringMap();;
