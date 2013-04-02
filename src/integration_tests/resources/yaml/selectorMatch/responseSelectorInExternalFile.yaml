@@ -1,11 +1,12 @@
 read: ../../xml/in.xml
 send_to: jetty_service
+verify_response:
+  is_available: Y
+  is_taken: N
+  is_renewable: Y
+
 response_selectors:
   import_files:
      - ../../selectors/noNamespaceXpathSelector.yaml
      - ../../selectors/anotherNoNamespaceXpathSelector.yaml
   is_renewable: /Envelope/Body/ServiceabilityLevel5Response/ServiceabilityLevel5Response/IsRenewable
-response_expectations:
-  is_available: Y
-  is_taken: N
-  is_renewable: Y

@@ -1,6 +1,7 @@
 read: ../../xml/in.xml
 send_to: jetty_service
+verify_response:
+  is_available: Y
+
 response_selectors:
   is_available: /this/xpath/is/not/in/the/response/document
-response_expectations:
-  is_available: Y

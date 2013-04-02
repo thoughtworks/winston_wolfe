@@ -28,7 +28,7 @@ public class ResponseValidatorFactory {
             return new ExactMatchValidator(new FileDataSource("compare_response_to", config));
         } else {
             Map<String, String> selectors = config.getSubConfig("response_selectors").getFlatStringMap();
-            Map<String, String> response_expectations = config.getSubConfig("response_expectations").getFlatStringMap();;
+            Map<String, String> response_expectations = config.getSubConfig("verify_response").getFlatStringMap();;
             return new SelectorMatchValidator(selectors, response_expectations);
         }
     }

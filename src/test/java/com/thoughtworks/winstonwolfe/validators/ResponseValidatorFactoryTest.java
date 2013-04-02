@@ -59,7 +59,7 @@ public class ResponseValidatorFactoryTest {
         WinstonConfig subConfig = mock(WinstonConfig.class);
         when(config.exists("compare_response_to")).thenReturn(false);
         when(config.exists("response_selectors")).thenReturn(true);
-        when(config.getSubConfig("response_expectations")).thenReturn(subConfig);
+        when(config.getSubConfig("verify_response")).thenReturn(subConfig);
         when(config.getSubConfig("response_selectors")).thenReturn(subConfig);
         when(subConfig.getFlatStringMap()).thenReturn(new HashMap<String, String>());
 
