@@ -4,9 +4,12 @@ import com.thoughtworks.winstonwolfe.config.WinstonConfig;
 import com.thoughtworks.winstonwolfe.config.YamlConfigLoader;
 import com.thoughtworks.winstonwolfe.datasource.FileDataSource;
 import com.thoughtworks.winstonwolfe.endpoint.NamedEndPointFactory;
+import com.thoughtworks.winstonwolfe.endpoint.ReportingEndPointFactory;
 import com.thoughtworks.winstonwolfe.endpoint.ScriptEndPointFactory;
+import com.thoughtworks.winstonwolfe.reporting.HtmlReport;
 import com.thoughtworks.winstonwolfe.runner.CommandLineArguments;
 import com.thoughtworks.winstonwolfe.script.Script;
+import com.thoughtworks.winstonwolfe.validators.ReportingValidatorFactory;
 import com.thoughtworks.winstonwolfe.validators.ResponseValidatorFactory;
 
 public class WinstonWolfe {
@@ -16,15 +19,23 @@ public class WinstonWolfe {
         WinstonConfig endpointConfig = new YamlConfigLoader().load(arguments.getPathToConfiguration());
         WinstonConfig scriptConfig = new YamlConfigLoader().load(arguments.getPathToTestScript());
 
+        HtmlReport report = new HtmlReport();
+
         NamedEndPointFactory namedEndPointFactory = new NamedEndPointFactory(endpointConfig);
         ScriptEndPointFactory scriptEndPointFactory = new ScriptEndPointFactory(scriptConfig, namedEndPointFactory);
+        ReportingEndPointFactory reportingEndPointFactory = new ReportingEndPointFactory(report, scriptEndPointFactory);
 
         FileDataSource requestDataSource = new FileDataSource("read", scriptConfig);
 
-        ResponseValidatorFactory factory = new ResponseValidatorFactory(scriptConfig);
+        ResponseValidatorFactory validatorFactory = new ResponseValidatorFactory(scriptConfig);
+        ReportingValidatorFactory reportingValidatorFactory = new ReportingValidatorFactory(report,validatorFactory);
 
-        Script script = new Script(scriptEndPointFactory, requestDataSource, factory);
-        script.run();
+        Script script = new Script(reportingEndPointFactory, requestDataSource, reportingValidatorFactory);
+        try {
+            script.run();
+        } finally {
+            System.out.println(report.render());
+        }
     }
 
 }

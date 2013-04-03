@@ -21,8 +21,9 @@ public class SelectorMatchValidator implements ResponseValidator {
     }
 
     @Override
-    public void validateAgainst(DataSource actualResponseDataSource) {
-        List<String> validationFailures = new ArrayList<String>();
+    public ValidationResults validateAgainst(DataSource actualResponseDataSource) {
+        List<String> successMessages = new ArrayList<String>();
+        List<String> failureMessages = new ArrayList<String>();
 
         Document document = actualResponseDataSource.getDocument();
         XPath xpath = XPathFactory.newInstance().newXPath();
@@ -33,26 +34,25 @@ public class SelectorMatchValidator implements ResponseValidator {
 
                 String selector = selectors.get(key);
                 if (selector == null) {
-                    validationFailures.add(String.format("Expected '%s' to be '%s' but no selector called '%s' was supplied", key, expectedValue, key));
+                    failureMessages.add(String.format("Expected '%s' to be '%s' but no selector called '%s' was supplied", key, expectedValue, key));
                     continue;
                 }
-
                 String result = xpath.evaluate(selector, document);
                 if (result.isEmpty()) {
-                    validationFailures.add(String.format("The Xpath identified as '%s' does not exist in the response", key));
+                    failureMessages.add(String.format("The Xpath identified as '%s' does not exist in the response", key));
                     continue;
                 }
                 if (!result.equals(expectedValue)) {
-                    validationFailures.add(String.format("Expected '%s' for '%s' but found '%s'", expectedValue, key, result));
+                    failureMessages.add(String.format("Expected '%s' for '%s' but found '%s'", expectedValue, key, result));
+                    continue;
                 }
+                successMessages.add(String.format("Found '%s' for '%s'", result, key));
             } catch (XPathExpressionException e) {
                 e.printStackTrace();
-                validationFailures.add(String.format("The xpath '%s' is not valid. Refer to the horrible stack trace on the console.", key));
+                failureMessages.add(String.format("The xpath '%s' is not valid. Refer to the horrible stack trace on the console.", key));
             }
-        }
 
-        if (!validationFailures.isEmpty()) {
-            throw new RuntimeException(Arrays.toString(validationFailures.toArray()));
         }
+        return new ValidationResults(successMessages, failureMessages);
     }
 }

@@ -10,14 +10,14 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -30,7 +30,7 @@ public class SelectorMatchValidatorTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void shouldNotComplainIfDocumentMatchesExpectations() throws Exception {
+    public void shouldReturnValidationResultWithSuccessfulMessageIfDocumentMatchesExpectations() throws Exception {
         Document response = createDocument("<data><details><name>Perryn</name><sex>M</sex></details></data>");
         DataSource dataSource = mock(DataSource.class);
         when(dataSource.getDocument()).thenReturn(response);
@@ -42,7 +42,11 @@ public class SelectorMatchValidatorTest {
         expectations.put("name", "Perryn");
 
         SelectorMatchValidator validator = new SelectorMatchValidator(selectors, expectations);
-        validator.validateAgainst(dataSource);
+        ValidationResults results = validator.validateAgainst(dataSource);
+
+        List<String> successMessages = new ArrayList<String>();
+        successMessages.add("Found 'Perryn' for 'name'");
+        assertThat(results.getSuccessMessages(), is(successMessages));
     }
 
     private Document createDocument(String xml) throws SAXException, IOException, ParserConfigurationException {
@@ -53,9 +57,6 @@ public class SelectorMatchValidatorTest {
 
     @Test
     public void shouldComplainIfDocumentDoesNotMatchExpectations() throws Exception {
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Expected 'Ryan' for 'name' but found 'Perryn'");
-
         Document response = createDocument("<data><details><name>Perryn</name><sex>M</sex></details></data>");
         DataSource dataSource = mock(DataSource.class);
         when(dataSource.getDocument()).thenReturn(response);
@@ -67,7 +68,11 @@ public class SelectorMatchValidatorTest {
         expectations.put("name", "Ryan");
 
         SelectorMatchValidator validator = new SelectorMatchValidator(selectors, expectations);
-        validator.validateAgainst(dataSource);
+        ValidationResults results = validator.validateAgainst(dataSource);
+
+        List<String> failureMessages = new ArrayList<String>();
+        failureMessages.add("Expected 'Ryan' for 'name' but found 'Perryn'");
+        assertThat(results.getFailureMessages(), is(failureMessages));
     }
 
     @Test
@@ -83,14 +88,11 @@ public class SelectorMatchValidatorTest {
         expectations.put("hobby", "Philately");
 
         SelectorMatchValidator validator = new SelectorMatchValidator(selectors, expectations);
-        try {
-            validator.validateAgainst(dataSource);
-            fail("Should have thrown an exception");
-        } catch (RuntimeException e) {
-            assertThat(e.getMessage(), containsString("The Xpath identified as 'hobby' does not exist in the response"));
-            assertThat(e.getMessage(), not(containsString("Expected 'Philately' for 'hobby' but found ''")));
-        }
+        ValidationResults results = validator.validateAgainst(dataSource);
 
+        List<String> failureMessages = new ArrayList<String>();
+        failureMessages.add("The Xpath identified as 'hobby' does not exist in the response");
+        assertThat(results.getFailureMessages(), is(failureMessages));
     }
 
     @Test
@@ -111,24 +113,20 @@ public class SelectorMatchValidatorTest {
         expectations.put("hobby", "xpath construction");
         expectations.put("thursday", "towel");
 
-
         SelectorMatchValidator validator = new SelectorMatchValidator(selectors, expectations);
-        try {
-            validator.validateAgainst(dataSource);
-            fail("Should have thrown an exception");
-        } catch (RuntimeException e) {
-            assertThat(e.getMessage(), containsString("Expected 'Ryan' for 'name' but found 'Perryn'"));
-            assertThat(e.getMessage(), containsString("Expected 'xpath construction' for 'hobby' but found 'philately'"));
-            assertThat(e.getMessage(), containsString("The Xpath identified as 'thursday' does not exist in the response"));
-        }
+        ValidationResults results = validator.validateAgainst(dataSource);
+
+        List<String> failureMessages = new ArrayList<String>();
+        failureMessages.add("The Xpath identified as 'thursday' does not exist in the response");
+        failureMessages.add("Expected 'Ryan' for 'name' but found 'Perryn'");
+        failureMessages.add("Expected 'xpath construction' for 'hobby' but found 'philately'");
+        assertThat(results.getFailureMessages(), is(failureMessages));
+
     }
 
     @Test
     public void shouldComplainWhenExpectationMatcherCanNotBeFound() throws Exception {
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Expected 'sex' to be 'M' but no selector called 'sex' was supplied");
-
-        Document response = createDocument("<data><details><name>Perryn</name><sex>M</sex><hobby>philately</hobby></details></data>");
+        Document response = createDocument("<data><details><name>Ryan</name><sex>M</sex><hobby>philately</hobby></details></data>");
         DataSource dataSource = mock(DataSource.class);
         when(dataSource.getDocument()).thenReturn(response);
 
@@ -140,7 +138,11 @@ public class SelectorMatchValidatorTest {
         expectations.put("sex", "M");
 
         SelectorMatchValidator validator = new SelectorMatchValidator(selectors, expectations);
-        validator.validateAgainst(dataSource);
+        ValidationResults results = validator.validateAgainst(dataSource);
+
+        List<String> failureMessages = new ArrayList<String>();
+        failureMessages.add("Expected 'sex' to be 'M' but no selector called 'sex' was supplied");
+        assertThat(results.getFailureMessages(), is(failureMessages));
     }
 
     @Test
@@ -156,11 +158,11 @@ public class SelectorMatchValidatorTest {
         expectations.put("name", "Ryan");
 
         SelectorMatchValidator validator = new SelectorMatchValidator(selectors, expectations);
-        try {
-            validator.validateAgainst(dataSource);
-            fail("Should have thrown an exception");
-        } catch (RuntimeException e) {
-            assertThat(e.getMessage(), containsString("The xpath 'name' is not valid. Refer to the horrible stack trace on the console."));
-        }
+        ValidationResults results = validator.validateAgainst(dataSource);
+
+        List<String> failureMessages = new ArrayList<String>();
+        failureMessages.add("The xpath 'name' is not valid. Refer to the horrible stack trace on the console.");
+        assertThat(results.getFailureMessages(), is(failureMessages));
+
     }
 }

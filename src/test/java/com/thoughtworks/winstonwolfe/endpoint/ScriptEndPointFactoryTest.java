@@ -8,7 +8,6 @@ import org.junit.rules.ExpectedException;
 import java.io.FileNotFoundException;
 
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -27,7 +26,7 @@ public class ScriptEndPointFactoryTest {
         WinstonConfig scriptConfig = mock(WinstonConfig.class);
         when(scriptConfig.getString("send_to")).thenReturn("ENDPOINT NAME");
 
-        ScriptEndPointFactory factory = new ScriptEndPointFactory(scriptConfig, namedFactory);
+        EndPointFactory factory = new ScriptEndPointFactory(scriptConfig, namedFactory);
         ServiceEndPoint serviceEndPoint = factory.buildEndPoint();
         assertThat(serviceEndPoint, is(builtEndPoint));
     }

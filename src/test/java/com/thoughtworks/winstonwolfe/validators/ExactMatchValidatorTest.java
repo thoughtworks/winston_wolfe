@@ -5,6 +5,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -13,22 +18,7 @@ public class ExactMatchValidatorTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void shouldThrowAnExceptionWhenResponsesDontMatch() {
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage(String.format("The expected response did not match the actual response.\nExpected:\n'%s'\nActual:\n'%s'", "I ARE EXPECTED", "I ARE ACTUAL"));
-
-        DataSource expected = mock(DataSource.class);
-        DataSource actual = mock(DataSource.class);
-
-        when(actual.getData()).thenReturn("I ARE ACTUAL");
-        when(expected.getData()).thenReturn("I ARE EXPECTED");
-
-        ExactMatchValidator validator = new ExactMatchValidator(expected);
-        validator.validateAgainst(actual);
-    }
-
-    @Test
-    public void shouldNotThrowAnExceptionWhenMatching() {
+    public void shouldReturnASuccessfulValidationResult() {
         DataSource expected = mock(DataSource.class);
         DataSource actual = mock(DataSource.class);
 
@@ -36,6 +26,26 @@ public class ExactMatchValidatorTest {
         when(expected.getData()).thenReturn("WE ARE THE SAME");
 
         ExactMatchValidator validator = new ExactMatchValidator(expected);
-        validator.validateAgainst(actual);
+        ValidationResults results = validator.validateAgainst(actual);
+
+        List<String> successMessages = new ArrayList<String>();
+        successMessages.add("The response met expectations");
+        assertThat(results.getSuccessMessages(), is(successMessages));
+    }
+
+    @Test
+    public void shouldReturnAFailedValidationResult() {
+        DataSource expected = mock(DataSource.class);
+        DataSource actual = mock(DataSource.class);
+
+        when(actual.getData()).thenReturn("I ARE ACTUAL");
+        when(expected.getData()).thenReturn("I ARE EXPECTED");
+
+        ExactMatchValidator validator = new ExactMatchValidator(expected);
+        ValidationResults results = validator.validateAgainst(actual);
+
+        List<String> failureMessages = new ArrayList<String>();
+        failureMessages.add(String.format("The expected response did not match the actual response.\nExpected:\n'%s'\nActual:\n'%s'", "I ARE EXPECTED", "I ARE ACTUAL"));
+        assertThat(results.getFailureMessages(), is(failureMessages));
     }
 }

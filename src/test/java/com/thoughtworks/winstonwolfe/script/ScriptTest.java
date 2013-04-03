@@ -1,10 +1,11 @@
 package com.thoughtworks.winstonwolfe.script;
 
 import com.thoughtworks.winstonwolfe.datasource.DataSource;
-import com.thoughtworks.winstonwolfe.endpoint.ScriptEndPointFactory;
+import com.thoughtworks.winstonwolfe.endpoint.EndPointFactory;
 import com.thoughtworks.winstonwolfe.endpoint.ServiceEndPoint;
 import com.thoughtworks.winstonwolfe.validators.ResponseValidator;
-import com.thoughtworks.winstonwolfe.validators.ResponseValidatorFactory;
+import com.thoughtworks.winstonwolfe.validators.ValidatorFactory;
+import com.thoughtworks.winstonwolfe.validators.ValidationResults;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,23 +23,27 @@ public class ScriptTest {
     private DataSource actualResponseDataSource;
     private ServiceEndPoint endPoint;
     private DataSource requestDataSource;
+    private ValidationResults validationResults;
 
     @Before
     public void setup() throws IOException {
         actualResponseDataSource = mock(DataSource.class);
 
-        ScriptEndPointFactory scriptEndPointFactory = mock(ScriptEndPointFactory.class);
+        EndPointFactory endPointFactory = mock(EndPointFactory.class);
         endPoint = mock(ServiceEndPoint.class);
-        when(scriptEndPointFactory.buildEndPoint()).thenReturn(endPoint);
+        when(endPointFactory.buildEndPoint()).thenReturn(endPoint);
         when(endPoint.send(any(DataSource.class))).thenReturn(actualResponseDataSource);
 
 
-        ResponseValidatorFactory responseValidatorFactory = mock(ResponseValidatorFactory.class);
+       ValidatorFactory responseValidatorFactory = mock(ValidatorFactory.class);
         validator = mock(ResponseValidator.class);
         when(responseValidatorFactory.buildValidator()).thenReturn(validator);
 
+        validationResults = mock(ValidationResults.class);
+        when(validator.validateAgainst(any(DataSource.class))).thenReturn(validationResults);
+
         requestDataSource = mock(DataSource.class);
-        script = new Script(scriptEndPointFactory, requestDataSource, responseValidatorFactory);
+        script = new Script(endPointFactory, requestDataSource, responseValidatorFactory);
     }
 
     @Test
@@ -52,5 +57,11 @@ public class ScriptTest {
         script.run();
 
         verify(validator).validateAgainst(actualResponseDataSource);
+    }
+
+    @Test
+    public void shouldCheckTheReponsePassedValidation() throws IOException {
+        script.run();
+        verify(validationResults).assertSuccess();
     }
 }

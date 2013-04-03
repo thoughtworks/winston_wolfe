@@ -5,7 +5,7 @@ import com.thoughtworks.winstonwolfe.datasource.FileDataSource;
 
 import java.util.Map;
 
-public class ResponseValidatorFactory {
+public class ResponseValidatorFactory implements ValidatorFactory {
 
     private final WinstonConfig config;
 
