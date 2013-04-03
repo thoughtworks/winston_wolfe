@@ -12,7 +12,7 @@ public class HtmlReport {
     }
 
     private String renderStyle() {
-      return "<style>#satisfactions {color: green} #disappointments {color: red} #request, #response {float:left; width: 40%;} textarea {width: 100%; height: 500;}</style>";
+      return "<style>.success {color: green} .failure {color: red} #request, #response {float:left; width: 40%;} textarea {width: 100%; height: 500;}</style>";
     }
     private String renderResults() {
         if (results == null) {
@@ -23,10 +23,14 @@ public class HtmlReport {
     }
 
     private String renderDisappointmentMessages() {
-        String resultsAsHtml = "<div id=\"disappointments\"><ul>";
+        if (results.getFailureMessages().isEmpty()) {
+            return "<div id=\"disappointments\"></div>";
+        }
 
-        for (String satisfaction : results.getFailureMessages()) {
-            resultsAsHtml += String.format("<li>%s</li>", satisfaction);
+        String resultsAsHtml = "<div id=\"disappointments\"><h3>Failure Messages</h3><ul>";
+
+        for (String disappointment : results.getFailureMessages()) {
+            resultsAsHtml += formatFailureMessage(disappointment);
         }
 
         resultsAsHtml += "</ul></div>";
@@ -34,14 +38,26 @@ public class HtmlReport {
     }
 
     private String renderSatisfactionMessages() {
-        String resultsAsHtml = "<div id=\"satisfactions\"><ul>";
+        if (results.getSuccessMessages().isEmpty()) {
+            return "<div id=\"satisfactions\"></div>";
+        }
+
+        String resultsAsHtml = "<div id=\"satisfactions\"><h3>Success Messages</h3><ul>";
 
         for (String satisfaction : results.getSuccessMessages()) {
-            resultsAsHtml += String.format("<li>%s</li>", satisfaction);
+            resultsAsHtml += formatSuccessMessage(satisfaction);
         }
 
         resultsAsHtml += "</ul></div>";
         return resultsAsHtml;
+    }
+
+    private String formatSuccessMessage(final String message) {
+        return String.format("<li class=\"success\">%s</li>", message);
+    }
+
+    private String formatFailureMessage(final String message) {
+        return String.format("<li class=\"failure\">%s</li>", message);
     }
 
     private String renderRequest() {

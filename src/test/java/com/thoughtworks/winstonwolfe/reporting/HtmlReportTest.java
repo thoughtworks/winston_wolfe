@@ -6,7 +6,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.containsString;
@@ -48,13 +47,29 @@ public class HtmlReportTest {
         report.addResults(results);
 
         String result = "";
-        result += "<div id=\"satisfactions\"><ul>";
-        result += "<li>Testing is awesome</li>";
-        result += "<li>Pass Pass Pass Pass</li>";
+        result += "<div id=\"satisfactions\"><h3>Success Messages</h3><ul>";
+        result += "<li class=\"success\">Testing is awesome</li>";
+        result += "<li class=\"success\">Pass Pass Pass Pass</li>";
         result += "</ul></div>";
 
         assertThat(report.render(), containsString(result));
     }
+
+
+    @Test
+    public void shouldRenderAnEmptyDivWhenNoExpectationsPassed() {
+        HtmlReport report = new HtmlReport();
+        ValidationResults results = mock(ValidationResults.class);
+        List<String> listOfStrings = new ArrayList<String>();
+        when(results.getSuccessMessages()).thenReturn(listOfStrings);
+        report.addResults(results);
+
+        String result = "";
+        result += "<div id=\"satisfactions\"></div>";
+
+        assertThat(report.render(), containsString(result));
+    }
+
 
     @Test
     public void shouldRenderFailedExpectationsAsDisappointments() {
@@ -67,10 +82,24 @@ public class HtmlReportTest {
         report.addResults(results);
 
         String result = "";
-        result += "<div id=\"disappointments\"><ul>";
-        result += "<li>Testing has been going to be awesome</li>";
-        result += "<li>Fail Fail Fail Fail</li>";
+        result += "<div id=\"disappointments\"><h3>Failure Messages</h3><ul>";
+        result += "<li class=\"failure\">Testing has been going to be awesome</li>";
+        result += "<li class=\"failure\">Fail Fail Fail Fail</li>";
         result += "</ul></div>";
+
+        assertThat(report.render(), containsString(result));
+    }
+
+    @Test
+    public void shouldRenderAnEmptyDivWhenNoFailedExpectationsAsDisappointments() {
+        HtmlReport report = new HtmlReport();
+        ValidationResults results = mock(ValidationResults.class);
+        List<String> listOfStrings = new ArrayList<String>();
+        when(results.getFailureMessages()).thenReturn(listOfStrings);
+        report.addResults(results);
+
+        String result = "";
+        result += "<div id=\"disappointments\"></div>";
 
         assertThat(report.render(), containsString(result));
     }
