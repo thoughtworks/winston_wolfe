@@ -1,6 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
+sourceCompatibility = "1.6"
+
 sourceSets {
     integrationTest {
         java.srcDir('src/integration_tests/java')
