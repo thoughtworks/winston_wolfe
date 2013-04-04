@@ -24,7 +24,7 @@ public class ReportingValidatorTest {
     private DataSource dataSource;
 
     @Before
-    public void setup() throws IOException {
+    public void setup() throws Exception {
         report = mock(HtmlReport.class);
         dataSource = mock(DataSource.class);
         validator = mock(ResponseValidator.class);
@@ -34,7 +34,7 @@ public class ReportingValidatorTest {
     }
 
     @Test
-    public void shouldDecorateValidator() throws IOException {
+    public void shouldDecorateValidator() throws Exception {
         ReportingValidator reportingValidator = new ReportingValidator(validator, report);
         assertThat(reportingValidator.validateAgainst(dataSource), is(results));
 
@@ -42,7 +42,7 @@ public class ReportingValidatorTest {
     }
 
     @Test
-    public void shouldReportResultsOfValidation() throws IOException {
+    public void shouldReportResultsOfValidation() throws Exception {
         ReportingValidator reportingValidator = new ReportingValidator(validator, report);
         reportingValidator.validateAgainst(dataSource);
 

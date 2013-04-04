@@ -1,4 +1,4 @@
-package integration.tests;
+package integration.tests.http;
 
 import com.thoughtworks.winstonwolfe.application.WinstonWolfe;
 import org.junit.After;

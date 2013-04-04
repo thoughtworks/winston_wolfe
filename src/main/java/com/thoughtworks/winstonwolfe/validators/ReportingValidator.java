@@ -13,7 +13,7 @@ public class ReportingValidator implements ResponseValidator {
     }
 
     @Override
-    public ValidationResults validateAgainst(DataSource actualResponseDataSource) {
+    public ValidationResults validateAgainst(DataSource actualResponseDataSource) throws Exception {
         ValidationResults results = validator.validateAgainst(actualResponseDataSource);
         report.addResults(results);
         return results;

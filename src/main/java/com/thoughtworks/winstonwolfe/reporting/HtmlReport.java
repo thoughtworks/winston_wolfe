@@ -1,6 +1,7 @@
 package com.thoughtworks.winstonwolfe.reporting;
 
 import com.thoughtworks.winstonwolfe.validators.ValidationResults;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 public class HtmlReport {
     private String request = "";
@@ -53,11 +54,11 @@ public class HtmlReport {
     }
 
     private String formatSuccessMessage(final String message) {
-        return String.format("<li class=\"success\">%s</li>", message);
+        return String.format("<li class=\"success\">%s</li>", StringEscapeUtils.escapeHtml4(message));
     }
 
     private String formatFailureMessage(final String message) {
-        return String.format("<li class=\"failure\">%s</li>", message);
+        return String.format("<li class=\"failure\">%s</li>", StringEscapeUtils.escapeHtml4(message));
     }
 
     private String renderRequest() {

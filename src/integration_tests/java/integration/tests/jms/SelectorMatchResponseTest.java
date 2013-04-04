@@ -1,4 +1,4 @@
-package integration.tests;
+package integration.tests.jms;
 
 import com.thoughtworks.winstonwolfe.application.WinstonWolfe;
 import infrastructure.MockJMSBasedSystemUnderTest;
@@ -9,14 +9,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import javax.jms.JMSException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
 
-public class ExactMatchJMSResponseTest {
-
+public class SelectorMatchResponseTest {
     MockJMSBasedSystemUnderTest mockSUT;
 
     @Rule
@@ -29,33 +27,41 @@ public class ExactMatchJMSResponseTest {
     }
 
     @After
-    public void shutDownServer() throws JMSException {
+    public void stopServer() throws Exception {
         mockSUT.stopServer();
     }
 
     @Test
-    public void noErrorIsRaisedWhenTheResponseIsCorrect() throws Exception {
+    public void selectorMatchPasses() throws Exception {
         URL config = ClassLoader.getSystemResource("yaml/jms_config.yaml");
-        URL script = ClassLoader.getSystemResource("yaml/exactMatch/passingTestScript.yaml");
+        URL script = ClassLoader.getSystemResource("yaml/selectorMatch/responseExistsScript.yaml");
 
         WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
     }
 
     @Test
-    public void anExceptionIsThrownWhenResponseIsNotCorrect() throws Exception {
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("The expected response did not match the actual response.");
-
+    public void selectorMatchIncludesSelectorsInFiles() throws Exception {
         URL config = ClassLoader.getSystemResource("yaml/jms_config.yaml");
-        URL script = ClassLoader.getSystemResource("yaml/exactMatch/failingTestScript.yaml");
+        URL script = ClassLoader.getSystemResource("yaml/selectorMatch/responseSelectorInExternalFile.yaml");
 
         WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
     }
+
+    @Test
+    public void selectorMatchFails() throws Exception {
+        expectedException.expect(RuntimeException.class);
+        expectedException.expectMessage("The Xpath identified as 'is_available' does not exist in the response");
+
+        URL config = ClassLoader.getSystemResource("yaml/jms_config.yaml");
+        URL script = ClassLoader.getSystemResource("yaml/selectorMatch/responseDoesNotExist.yaml");
+
+        WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
+    }
+
 
     private String getResourceFileContents(String filename) throws IOException {
         URL url = ClassLoader.getSystemResource(filename);
 
         return new Scanner(new File(url.getPath())).useDelimiter("\\Z").next();
     }
-
 }
