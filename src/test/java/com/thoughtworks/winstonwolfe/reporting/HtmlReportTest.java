@@ -23,17 +23,17 @@ public class HtmlReportTest {
     @Test
     public void shouldRenderTheRequestDocument() {
         HtmlReport report = new HtmlReport();
-        report.setRequest("<blah />");
+        report.setRequest("<blah><inner /></blah>");
 
-        assertThat(report.render(), containsString("<div id=\"request\"><h3>Sent Request</h3><textarea disabled=\"true\"><blah /></textarea></div>"));
+        assertThat(report.render(), containsString("<div id=\"request\"><h3>Sent Request</h3><textarea disabled=\"true\"><blah>\n  <inner/>\n</blah>\n</textarea></div>"));
     }
 
     @Test
     public void shouldRenderTheResponseDocument() {
         HtmlReport report = new HtmlReport();
-        report.setResponse("<mahResponse />");
+        report.setResponse("<mahResponse><inner /></mahResponse>");
 
-        assertThat(report.render(), containsString("<div id=\"response\"><h3>Received Response</h3><textarea disabled=\"true\"><mahResponse /></textarea></div>"));
+        assertThat(report.render(), containsString("<div id=\"response\"><h3>Received Response</h3><textarea disabled=\"true\"><mahResponse>\n  <inner/>\n</mahResponse>\n</textarea></div>"));
     }
 
     @Test
