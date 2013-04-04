@@ -24,7 +24,7 @@ public class ReportingEndpointTest {
     private DataSource dataSource;
 
     @Before
-    public void setup() throws IOException {
+    public void setup() throws Exception {
         report = mock(HtmlReport.class);
         responseDataSource = mock(DataSource.class);
         when(responseDataSource.getData()).thenReturn("herp");
@@ -36,7 +36,7 @@ public class ReportingEndpointTest {
         when(dataSource.getData()).thenReturn("derp");
     }
     @Test
-    public void shouldReportRequestsSentViaEndpoint() throws IOException {
+    public void shouldReportRequestsSentViaEndpoint() throws Exception {
         ReportingEndpoint reportingEndpoint = new ReportingEndpoint(endpoint, report);
         reportingEndpoint.send(dataSource);
 
@@ -44,7 +44,7 @@ public class ReportingEndpointTest {
     }
 
     @Test
-    public void shouldDecorateEndpoint() throws IOException {
+    public void shouldDecorateEndpoint() throws Exception {
         ReportingEndpoint reportingEndpoint = new ReportingEndpoint(endpoint, report);
         assertThat(reportingEndpoint.send(dataSource), is(responseDataSource));
 
@@ -52,7 +52,7 @@ public class ReportingEndpointTest {
     }
 
     @Test
-    public void shouldReportResponsesReceivedViaEndpoint() throws IOException {
+    public void shouldReportResponsesReceivedViaEndpoint() throws Exception {
         ReportingEndpoint reportingEndpoint = new ReportingEndpoint(endpoint, report);
         reportingEndpoint.send(dataSource);
 

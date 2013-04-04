@@ -4,7 +4,7 @@ import com.thoughtworks.winstonwolfe.application.WinstonWolfe;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import testInfrastructure.MockSystemUnderTest;
+import infrastructure.MockSystemUnderTest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -33,7 +33,7 @@ public class HtmlReportTest {
 
     @Test
     public void shouldGenerateAnHtmlReportOnSuccess() throws Exception {
-        URL config = ClassLoader.getSystemResource("yaml/config.yaml");
+        URL config = ClassLoader.getSystemResource("yaml/http_config.yaml");
         URL script = ClassLoader.getSystemResource("yaml/exactMatch/passingTestScript.yaml");
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -51,7 +51,7 @@ public class HtmlReportTest {
 
     @Test
     public void shouldGenerateAnHtmlReportOnFailure() throws Exception {
-        URL config = ClassLoader.getSystemResource("yaml/config.yaml");
+        URL config = ClassLoader.getSystemResource("yaml/http_config.yaml");
         URL script = ClassLoader.getSystemResource("yaml/exactMatch/failingTestScript.yaml");
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

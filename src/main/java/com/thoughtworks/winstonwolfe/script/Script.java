@@ -18,7 +18,7 @@ public class Script {
         this.factory = factory;
     }
 
-    public void run() throws IOException {
+    public void run() throws Exception {
         ServiceEndPoint endPoint = endPointFactory.buildEndPoint();
         DataSource actualResponseDataSource = endPoint.send(requestDataSource);
         factory.buildValidator().validateAgainst(actualResponseDataSource).assertSuccess();

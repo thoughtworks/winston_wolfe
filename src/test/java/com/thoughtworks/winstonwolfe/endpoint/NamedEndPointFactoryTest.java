@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
@@ -18,14 +20,26 @@ public class NamedEndPointFactoryTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void shouldBuildHttpServiceEndpoint() throws FileNotFoundException {
+    public void shouldBuildHttpServiceEndpointWhenProvidedHTTPUrl() throws FileNotFoundException {
+        WinstonConfig subConfig = mock(WinstonConfig.class);
+        when(subConfig.exists("http_url")).thenReturn(true);
         WinstonConfig endpointConfig = mock(WinstonConfig.class);
-        when(endpointConfig.getString("jetty_service")).thenReturn("http://foo.com");
+        when(endpointConfig.getSubConfig("service")).thenReturn(subConfig);
 
         NamedEndPointFactory factory = new NamedEndPointFactory(endpointConfig);
-        ServiceEndPoint serviceEndPoint = factory.buildEndPoint("jetty_service");
+        ServiceEndPoint serviceEndPoint = factory.buildEndPoint("service");
         assertThat(serviceEndPoint, is(instanceOf(HttpServiceEndPoint.class)));
-        HttpServiceEndPoint httpServiceEndPoint =  (HttpServiceEndPoint) serviceEndPoint;
-        assertThat(httpServiceEndPoint.getUrl(), is("http://foo.com"));
+    }
+
+    @Test
+    public void shouldBuildJmsServiceEndpointWhenNoHTTPUrl() {
+        WinstonConfig subConfig = mock(WinstonConfig.class);
+        when(subConfig.exists("http_url")).thenReturn(false);
+        WinstonConfig endpointConfig = mock(WinstonConfig.class);
+        when(endpointConfig.getSubConfig("service")).thenReturn(subConfig);
+
+        NamedEndPointFactory factory = new NamedEndPointFactory(endpointConfig);
+        ServiceEndPoint serviceEndPoint = factory.buildEndPoint("service");
+        assertThat(serviceEndPoint, is(instanceOf(JmsServiceEndPoint.class)));
     }
 }

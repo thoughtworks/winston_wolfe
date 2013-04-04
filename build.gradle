@@ -9,15 +9,15 @@ sourceSets {
 }
 
 dependencies {
-   compile fileTree(dir: 'lib/runtime', include: '*.jar')
-   testCompile fileTree(dir: 'lib/test', include: '*.jar')
+    compile fileTree(dir: 'lib/runtime', include: '*.jar')
+    testCompile fileTree(dir: 'lib/test', include: '*.jar')
 
-   integrationTestCompile sourceSets.main.output
-   integrationTestCompile fileTree(dir: 'lib/test', include: '*.jar')
-   integrationTestCompile fileTree(dir: 'lib/integration_test', include: '*.jar')
+    integrationTestCompile sourceSets.main.output
+    integrationTestCompile fileTree(dir: 'lib/test', include: '*.jar')
+    integrationTestCompile fileTree(dir: 'lib/integration_test', include: '*.jar')
 }
 
-task integrationTest(type:Test) {
+task integrationTest(type: Test) {
     testClassesDir = sourceSets.integrationTest.output.classesDir
     classpath += sourceSets.integrationTest.runtimeClasspath
 }

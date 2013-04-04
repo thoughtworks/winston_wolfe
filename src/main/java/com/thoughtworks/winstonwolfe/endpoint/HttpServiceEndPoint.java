@@ -1,5 +1,6 @@
 package com.thoughtworks.winstonwolfe.endpoint;
 
+import com.thoughtworks.winstonwolfe.config.WinstonConfig;
 import com.thoughtworks.winstonwolfe.datasource.DataSource;
 import com.thoughtworks.winstonwolfe.datasource.StringDataSource;
 import org.apache.http.client.HttpClient;
@@ -11,11 +12,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.IOException;
 
 public class HttpServiceEndPoint implements ServiceEndPoint {
-
     private String url;
 
-    public HttpServiceEndPoint(String url) {
-        this.url = url;
+    public HttpServiceEndPoint(WinstonConfig endpointConfig) {
+        url = endpointConfig.getString("http_url");
     }
 
     public String getUrl() {

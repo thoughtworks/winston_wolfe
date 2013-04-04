@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import testInfrastructure.MockSystemUnderTest;
+import infrastructure.MockSystemUnderTest;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class ExactMatchResponseTest {
 
     @Test
     public void noErrorIsRaisedWhenTheResponseIsCorrect() throws Exception {
-        URL config = ClassLoader.getSystemResource("yaml/config.yaml");
+        URL config = ClassLoader.getSystemResource("yaml/http_config.yaml");
         URL script = ClassLoader.getSystemResource("yaml/exactMatch/passingTestScript.yaml");
 
         WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
@@ -43,7 +43,7 @@ public class ExactMatchResponseTest {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("The expected response did not match the actual response.");
 
-        URL config = ClassLoader.getSystemResource("yaml/config.yaml");
+        URL config = ClassLoader.getSystemResource("yaml/http_config.yaml");
         URL script = ClassLoader.getSystemResource("yaml/exactMatch/failingTestScript.yaml");
 
         WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});

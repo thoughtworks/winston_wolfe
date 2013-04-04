@@ -15,7 +15,7 @@ public class ReportingEndpoint implements ServiceEndPoint {
     }
 
     @Override
-    public DataSource send(DataSource request) throws IOException {
+    public DataSource send(DataSource request) throws Exception {
         report.setRequest(request.getData());
         DataSource response = endpoint.send(request);
         report.setResponse(response.getData());

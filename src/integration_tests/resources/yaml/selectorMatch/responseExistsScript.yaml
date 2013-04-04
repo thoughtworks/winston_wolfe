@@ -1,5 +1,5 @@
 read: ../../xml/in.xml
-send_to: jetty_service
+send_to: mock_endpoint
 verify_response:
   is_available: Y
 response_selectors:

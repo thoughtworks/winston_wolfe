@@ -1,3 +1,3 @@
 read: ../../xml/in.xml
-send_to: jetty_service
+send_to: mock_endpoint
 compare_response_to: ../../xml/out.xml

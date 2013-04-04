@@ -11,6 +11,10 @@ public class NamedEndPointFactory {
     }
 
     public ServiceEndPoint buildEndPoint(String endpoint) {
-        return new HttpServiceEndPoint(config.getString(endpoint));
+        WinstonConfig endpointConfig = config.getSubConfig(endpoint);
+        if (endpointConfig.exists("http_url")) {
+            return new HttpServiceEndPoint(endpointConfig);
+        }
+        return new JmsServiceEndPoint(endpointConfig);
     }
 }

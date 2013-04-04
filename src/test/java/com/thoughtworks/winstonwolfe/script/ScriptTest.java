@@ -26,7 +26,7 @@ public class ScriptTest {
     private ValidationResults validationResults;
 
     @Before
-    public void setup() throws IOException {
+    public void setup() throws Exception {
         actualResponseDataSource = mock(DataSource.class);
 
         EndPointFactory endPointFactory = mock(EndPointFactory.class);
@@ -47,20 +47,20 @@ public class ScriptTest {
     }
 
     @Test
-    public void shouldSendTheRequestToTheEndPoint() throws IOException {
+    public void shouldSendTheRequestToTheEndPoint() throws Exception {
         script.run();
         verify(endPoint).send(requestDataSource);
     }
 
     @Test
-    public void shouldValidateTheResponse() throws IOException {
+    public void shouldValidateTheResponse() throws Exception {
         script.run();
 
         verify(validator).validateAgainst(actualResponseDataSource);
     }
 
     @Test
-    public void shouldCheckTheReponsePassedValidation() throws IOException {
+    public void shouldCheckTheReponsePassedValidation() throws Exception {
         script.run();
         verify(validationResults).assertSuccess();
     }

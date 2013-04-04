@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import testInfrastructure.MockSystemUnderTest;
+import infrastructure.MockSystemUnderTest;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class SelectorMatchResponseTest {
 
     @Test
     public void selectorMatchPasses() throws Exception {
-        URL config = ClassLoader.getSystemResource("yaml/config.yaml");
+        URL config = ClassLoader.getSystemResource("yaml/http_config.yaml");
         URL script = ClassLoader.getSystemResource("yaml/selectorMatch/responseExistsScript.yaml");
 
         WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
@@ -40,7 +40,7 @@ public class SelectorMatchResponseTest {
 
     @Test
     public void selectorMatchIncludesSelectorsInFiles() throws Exception {
-        URL config = ClassLoader.getSystemResource("yaml/config.yaml");
+        URL config = ClassLoader.getSystemResource("yaml/http_config.yaml");
         URL script = ClassLoader.getSystemResource("yaml/selectorMatch/responseSelectorInExternalFile.yaml");
 
         WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
@@ -51,7 +51,7 @@ public class SelectorMatchResponseTest {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("The Xpath identified as 'is_available' does not exist in the response");
 
-        URL config = ClassLoader.getSystemResource("yaml/config.yaml");
+        URL config = ClassLoader.getSystemResource("yaml/http_config.yaml");
         URL script = ClassLoader.getSystemResource("yaml/selectorMatch/responseDoesNotExist.yaml");
 
         WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});

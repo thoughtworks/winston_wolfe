@@ -5,5 +5,5 @@ import com.thoughtworks.winstonwolfe.datasource.DataSource;
 import java.io.IOException;
 
 public interface ServiceEndPoint {
-    DataSource send(DataSource data) throws IOException;
+    DataSource send(DataSource data) throws IOException, Exception;
 }
