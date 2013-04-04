@@ -37,6 +37,14 @@ public class HtmlReportTest {
     }
 
     @Test
+    public void shouldReturnAnUnformattedStringIfAnExceptionIsThrown() {
+        HtmlReport report = new HtmlReport();
+        report.setResponse("<mahResponse</mahResponse>");
+
+        assertThat(report.render(), containsString("<div id=\"response\"><h3>Received Response</h3><textarea disabled=\"true\"><mahResponse</mahResponse></textarea></div>"));
+    }
+
+    @Test
     public void shouldRenderPassedExpectationsAsSatisfactions() {
         HtmlReport report = new HtmlReport();
         ValidationResults results = mock(ValidationResults.class);
