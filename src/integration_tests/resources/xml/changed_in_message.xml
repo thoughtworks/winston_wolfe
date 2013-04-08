@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+                   xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <SOAP-ENV:Body>
+        <bwns:ServiceabilityLevel5Response
+                xmlns:bwns="http://Med_Lib_Service/2007/06/30/interfaces/FeasibilityManagerService">
+            <ServiceabilityLevel5Response xsi:type="qu:ServiceabilityLevel5Response"
+                                          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                          xmlns:qu="http://telstra.oss.fal/ManageServiceQualification.xsd">
+                <IsAvailable>N</IsAvailable>
+            </ServiceabilityLevel5Response>
+        </bwns:ServiceabilityLevel5Response>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

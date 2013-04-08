@@ -49,6 +49,66 @@ public class SelectorMatchValidatorTest {
         assertThat(results.getSuccessMessages(), is(successMessages));
     }
 
+    @Test
+    public void shouldReturnValidationResultWhenMatchingOnAttributes() throws Exception {
+        Document response = createDocument("<data><details name=\"Perryn\"><sex>M</sex></details></data>");
+        DataSource dataSource = mock(DataSource.class);
+        when(dataSource.getDocument()).thenReturn(response);
+
+        Map<String, String> selectors = new HashMap<String, String>();
+        selectors.put("name", "//details/@name");
+
+        Map<String, String> expectations = new HashMap<String, String>();
+        expectations.put("name", "Perryn");
+
+        SelectorMatchValidator validator = new SelectorMatchValidator(selectors, expectations);
+        ValidationResults results = validator.validateAgainst(dataSource);
+
+        List<String> successMessages = new ArrayList<String>();
+        successMessages.add("Found 'Perryn' for 'name'");
+        assertThat(results.getSuccessMessages(), is(successMessages));
+    }
+
+    @Test
+    public void shouldReturnValidationResultWhenMatchingWithSiblings() throws Exception {
+        Document response = createDocument("<data><details><name>Perryn</name><sex>M</sex></details><details><name>Jacqui</name><sex>F</sex></details></data>");
+        DataSource dataSource = mock(DataSource.class);
+        when(dataSource.getDocument()).thenReturn(response);
+
+        Map<String, String> selectors = new HashMap<String, String>();
+        selectors.put("sex", "//details/sex[../name/text() = \"Jacqui\"]");
+
+        Map<String, String> expectations = new HashMap<String, String>();
+        expectations.put("sex", "F");
+
+        SelectorMatchValidator validator = new SelectorMatchValidator(selectors, expectations);
+        ValidationResults results = validator.validateAgainst(dataSource);
+
+        List<String> successMessages = new ArrayList<String>();
+        successMessages.add("Found 'F' for 'sex'");
+        assertThat(results.getSuccessMessages(), is(successMessages));
+    }
+
+    @Test
+    public void shouldReturnValidationResultWhenMatchingWithMultipleSiblings() throws Exception {
+        Document response = createDocument("<data><details><name>Perryn</name><sex>M</sex><age>37</age></details><details><name>Jacqui</name><sex>F</sex><age>36</age></details></data>");
+        DataSource dataSource = mock(DataSource.class);
+        when(dataSource.getDocument()).thenReturn(response);
+
+        Map<String, String> selectors = new HashMap<String, String>();
+        selectors.put("sex", "//details/sex[../name/text() = \"Jacqui\"][../age/text() = \"36\"]");
+
+        Map<String, String> expectations = new HashMap<String, String>();
+        expectations.put("sex", "F");
+
+        SelectorMatchValidator validator = new SelectorMatchValidator(selectors, expectations);
+        ValidationResults results = validator.validateAgainst(dataSource);
+
+        List<String> successMessages = new ArrayList<String>();
+        successMessages.add("Found 'F' for 'sex'");
+        assertThat(results.getSuccessMessages(), is(successMessages));
+    }
+
     private Document createDocument(String xml) throws SAXException, IOException, ParserConfigurationException {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);

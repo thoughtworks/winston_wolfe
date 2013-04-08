@@ -2,6 +2,8 @@ package com.thoughtworks.winstonwolfe.application;
 
 import com.thoughtworks.winstonwolfe.config.WinstonConfig;
 import com.thoughtworks.winstonwolfe.config.YamlConfigLoader;
+import com.thoughtworks.winstonwolfe.datasource.DataSource;
+import com.thoughtworks.winstonwolfe.datasource.DataSourceFactory;
 import com.thoughtworks.winstonwolfe.datasource.FileDataSource;
 import com.thoughtworks.winstonwolfe.endpoint.NamedEndPointFactory;
 import com.thoughtworks.winstonwolfe.endpoint.ReportingEndPointFactory;
@@ -25,7 +27,8 @@ public class WinstonWolfe {
         ScriptEndPointFactory scriptEndPointFactory = new ScriptEndPointFactory(scriptConfig, namedEndPointFactory);
         ReportingEndPointFactory reportingEndPointFactory = new ReportingEndPointFactory(report, scriptEndPointFactory);
 
-        FileDataSource requestDataSource = new FileDataSource("read", scriptConfig);
+        DataSourceFactory dataSourceFactory = new DataSourceFactory(scriptConfig);
+        DataSource requestDataSource = dataSourceFactory.buildDataSource();
 
         ResponseValidatorFactory validatorFactory = new ResponseValidatorFactory(scriptConfig);
         ReportingValidatorFactory reportingValidatorFactory = new ReportingValidatorFactory(report,validatorFactory);

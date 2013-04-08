@@ -1,0 +1,11 @@
+read: ../../xml/original_in_message.xml
+apply_changes:
+  is_available: N
+send_to: mock_endpoint
+verify_response:
+  is_available: Y
+
+request_selectors:
+  is_available: /Envelope/Body/ServiceabilityLevel5Response/ServiceabilityLevel5Response/IsAvailable
+response_selectors:
+  is_available: /Envelope/Body/ServiceabilityLevel5Response/ServiceabilityLevel5Response/IsAvailable
