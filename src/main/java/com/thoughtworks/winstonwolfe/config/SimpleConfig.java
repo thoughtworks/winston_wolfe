@@ -66,5 +66,8 @@ public class SimpleConfig implements WinstonConfig {
         return results;
     }
 
-
+    @Override
+    public Integer getInt(String key) {
+        return (Integer) map.get(key);
+    }
 }

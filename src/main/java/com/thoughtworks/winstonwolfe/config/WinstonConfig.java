@@ -14,4 +14,6 @@ public interface WinstonConfig {
 
     Map<String, Object> getMap();
     Map<String,String> getFlatStringMap();
+
+    Integer getInt(String key);
 }

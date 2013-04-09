@@ -213,4 +213,13 @@ public class SimpleConfigTest {
         assertThat(config.exists("foo"), is(true));
         assertThat(config.exists("herp"), is(false));
     }
+
+    @Test
+    public void shouldReturnAnInteger() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("key", 1);
+
+        SimpleConfig config = new SimpleConfig(map, "basePath");
+        assertThat(config.getInt("key"), is(1));
+    }
 }

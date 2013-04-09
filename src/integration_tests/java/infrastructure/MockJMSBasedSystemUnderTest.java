@@ -1,19 +1,15 @@
 package infrastructure;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.eclipse.jetty.server.Server;
 
 import javax.jms.*;
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.util.Scanner;
 
 public class MockJMSBasedSystemUnderTest implements MessageListener {
 
     private String cannedResponse = "";
     private String lastRequest = "No requests received yet.";
     private Destination requestQueue;
-    private Destination reponseQueue;
+    private Destination responseQueue;
     private Session session;
     private Connection conn;
 
@@ -27,7 +23,7 @@ public class MockJMSBasedSystemUnderTest implements MessageListener {
         conn.start();
         session = conn.createSession(false, Session.AUTO_ACKNOWLEDGE);
         requestQueue = session.createQueue("requestQueue");
-        reponseQueue = session.createQueue("responseQueue");
+        responseQueue = session.createQueue("responseQueue");
 
         MessageConsumer consumer = session.createConsumer(requestQueue);
         consumer.setMessageListener(this);
@@ -45,7 +41,7 @@ public class MockJMSBasedSystemUnderTest implements MessageListener {
             requestMessage.readBytes(bytes);
             lastRequest = new String(bytes, "UTF-8");
 
-            MessageProducer producer = session.createProducer(reponseQueue);
+            MessageProducer producer = session.createProducer(responseQueue);
             BytesMessage responseMessage = session.createBytesMessage();
             responseMessage.setJMSCorrelationID(requestMessage.getJMSMessageID());
             responseMessage.writeBytes(cannedResponse.getBytes("UTF-8"));

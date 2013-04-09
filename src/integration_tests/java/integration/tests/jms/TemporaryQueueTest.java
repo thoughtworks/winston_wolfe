@@ -1,12 +1,8 @@
 package integration.tests.jms;
 
 import com.thoughtworks.winstonwolfe.application.WinstonWolfe;
-import infrastructure.MockJMSBasedSystemUnderTest;
-import infrastructure.MockSystemUnderTest;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import infrastructure.MockJMSBasedSystemUnderTestWithDynamicQueues;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 
 import java.io.File;
@@ -14,15 +10,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
 
-public class SelectorMatchResponseTest {
-    MockJMSBasedSystemUnderTest mockSUT;
+public class TemporaryQueueTest {
+    MockJMSBasedSystemUnderTestWithDynamicQueues mockSUT;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     @Before
     public void spinUpServer() throws Exception {
-        mockSUT = new MockJMSBasedSystemUnderTest(getResourceFileContents("xml/out.xml"));
+        mockSUT = new MockJMSBasedSystemUnderTestWithDynamicQueues(getResourceFileContents("xml/out.xml"));
         mockSUT.startServer();
     }
 

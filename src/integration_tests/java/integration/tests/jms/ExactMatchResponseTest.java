@@ -35,7 +35,7 @@ public class ExactMatchResponseTest {
 
     @Test
     public void noErrorIsRaisedWhenTheResponseIsCorrect() throws Exception {
-        URL config = ClassLoader.getSystemResource("yaml/jms_config.yaml");
+        URL config = ClassLoader.getSystemResource("yaml/jms_config_with_static_queues.yaml");
         URL script = ClassLoader.getSystemResource("yaml/exactMatch/passingTestScript.yaml");
 
         WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
@@ -46,7 +46,7 @@ public class ExactMatchResponseTest {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("The expected response did not match the actual response.");
 
-        URL config = ClassLoader.getSystemResource("yaml/jms_config.yaml");
+        URL config = ClassLoader.getSystemResource("yaml/jms_config_with_static_queues.yaml");
         URL script = ClassLoader.getSystemResource("yaml/exactMatch/failingTestScript.yaml");
 
         WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});

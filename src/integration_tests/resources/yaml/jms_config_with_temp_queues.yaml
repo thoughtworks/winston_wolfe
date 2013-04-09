@@ -1,0 +1,24 @@
+mock_endpoint:
+  context_factory: org.apache.activemq.jndi.ActiveMQInitialContextFactory
+  provider_url: vm://localhost?broker.persistent=false
+  connection_factory_name: ConnectionFactory
+  jndi_username: ""
+  jndi_password: ""
+  jms_username: ""
+  jms_password: ""
+  request_queue: dynamicQueues/requestQueue
+  request_queue_type: dynamic
+  response_queue: ignored
+  response_queue_type: dynamic
+  encoding: UTF-8
+  timeout: 2000
+  additional_properties:
+    SOAPJMS_targetService: "RequestResourceAvailabilityCheck"
+    SOAPJMS_bindingVersion: "1.0"
+    SOAPJMS_contentType: text/xml; charset="UTF-8"
+    SOAPJMS_soapAction: "RequestResourceAvailabilityCheck"
+    SOAPJMS_isFault: "false"
+    SOAPJMS_requestIRI: "sds"
+    SOAPJMS_requestURI: ""
+    SOAPJMS_soapMEP: "http://www.w3.org/2003/05/soap/mep/request-response/"
+    SOAPJMS_contentEncoding: UTF-8
