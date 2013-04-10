@@ -1,0 +1,17 @@
+read: ../../xml/original_in_message.xml
+send_to: mock_endpoint
+verify_response:
+  Item:
+    Name: Roger
+    Age: 36
+    IsAvailable: Y
+
+response_selectors:
+  Name: /Envelope/Body/ServiceabilityLevel5Response/ServiceabilityLevel5Response/Item/Name
+  Age: /Envelope/Body/ServiceabilityLevel5Response/ServiceabilityLevel5Response/Item/Age
+  IsAvailable: /Envelope/Body/ServiceabilityLevel5Response/ServiceabilityLevel5Response/Item/IsAvailable
+  Item:
+    root: /Envelope/Body/ServiceabilityLevel5Response/ServiceabilityLevel5Response/Item
+    Name: /Name
+    Age: /Age
+    IsAvailable: /IsAvailable
