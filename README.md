@@ -8,6 +8,8 @@ While these tools are often well made; they are not one that I would ever start 
 
 It's not all peaches and cream though as a common theme for these tools is that they ask the least appropriate people (testers) to put automated tests in the least appropriate place (external system interfaces).
 
+**Winston Wolfe doesn't fix practices. Winston Wolfe fixes problems.**
+
 
 ## What does it do?
 It loads, adjusts and then throws documents at HTTP or JMS endpoints and then runs XPath validation on the response.
