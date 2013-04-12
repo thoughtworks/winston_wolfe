@@ -6,7 +6,7 @@ A harm-minimisation tool is one you use when you've already caused a lot of dama
 
 While these tools are often well made; they are not one that I would ever start off with in mind. This isn't an end-state tool. I only use such a tool here because of the situation I am in.
 
-It's not all peaches and cream though as a common theme for these tools is that they ask the least appropriate people (testers) to put automated tests in the least appropriate place (external system interfaces).
+It's not all peaches and cream though as a common theme for these tools is that they ask the least appropriate people (testers) to put the only automated tests in the least appropriate place (external system interfaces).
 
 **Winston Wolfe doesn't fix practices. Winston Wolfe fixes problems.**
 
