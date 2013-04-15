@@ -1,12 +1,19 @@
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'idea'
 
 sourceCompatibility = "1.6"
 
+project.ext {
+    integrationTestsJarFiles = fileTree(dir: 'lib/integration_test', include: '*.jar')
+    integrationTestsSourceDir = 'src/integration_tests/java'
+    integrationTestsResourceDir = 'src/integration_tests/resources'
+}
+
 sourceSets {
     integrationTest {
-        java.srcDir('src/integration_tests/java')
-        resources.srcDir('src/integration_tests/resources')
+        java.srcDir(integrationTestsSourceDir)
+        resources.srcDir(integrationTestsResourceDir)
     }
 }
 
@@ -16,7 +23,7 @@ dependencies {
 
     integrationTestCompile sourceSets.main.output
     integrationTestCompile fileTree(dir: 'lib/test', include: '*.jar')
-    integrationTestCompile fileTree(dir: 'lib/integration_test', include: '*.jar')
+    integrationTestCompile integrationTestsJarFiles
 }
 
 task integrationTest(type: Test) {
@@ -25,3 +32,19 @@ task integrationTest(type: Test) {
 }
 
 mainClassName = 'com.thoughtworks.winstonwolfe.application.WinstonWolfe'
+
+idea {
+    project {
+        jdkName = sourceCompatibility
+        languageLevel = sourceCompatibility
+    }
+
+    module {
+        name = 'winston_wolfe'
+        testSourceDirs += [ file(integrationTestsSourceDir),
+                            file(integrationTestsResourceDir) ]
+        dependencies {
+            testCompile integrationTestsJarFiles
+        }
+    }
+}

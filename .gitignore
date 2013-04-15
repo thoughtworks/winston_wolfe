@@ -4,3 +4,6 @@ build
 ww.html
 proprietary_libs
 src/examples
+*.iws
+*.iml
+*.ipr
