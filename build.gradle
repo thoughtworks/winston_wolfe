@@ -35,7 +35,6 @@ mainClassName = 'com.thoughtworks.winstonwolfe.application.WinstonWolfe'
 
 idea {
     project {
-        jdkName = sourceCompatibility
         languageLevel = sourceCompatibility
     }
 
