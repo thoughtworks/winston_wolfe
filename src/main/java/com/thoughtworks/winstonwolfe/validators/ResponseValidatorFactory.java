@@ -8,9 +8,13 @@ import java.util.Map;
 public class ResponseValidatorFactory implements ValidatorFactory {
 
     private final WinstonConfig config;
+    private ExactMatchValidatorFactory exactMatchValidatorFactory;
+    private SelectorMatchValidatorFactory selectMatchValidatorFactory;
 
-    public ResponseValidatorFactory(WinstonConfig config) {
+    public ResponseValidatorFactory(WinstonConfig config, ExactMatchValidatorFactory exactMatchValidatorFactory, SelectorMatchValidatorFactory selectMatchValidatorFactory) {
         this.config = config;
+        this.exactMatchValidatorFactory = exactMatchValidatorFactory;
+        this.selectMatchValidatorFactory = selectMatchValidatorFactory;
     }
 
     public ResponseValidator buildValidator() {
@@ -25,11 +29,9 @@ public class ResponseValidatorFactory implements ValidatorFactory {
         }
 
         if (hasResponse) {
-            return new ExactMatchValidator(new FileDataSource("compare_response_to", config));
+            return exactMatchValidatorFactory.buildValidator();
         } else {
-            Map<String, String> selectors = config.getSubConfig("response_selectors").getFlatStringMap();
-            Map<String, String> response_expectations = config.getSubConfig("verify_response").getFlatStringMap();
-            return new SelectorMatchValidator(selectors, response_expectations);
+            return selectMatchValidatorFactory.buildValidator();
         }
     }
 }

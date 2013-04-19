@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -221,5 +223,19 @@ public class SimpleConfigTest {
 
         SimpleConfig config = new SimpleConfig(map, "basePath");
         assertThat(config.getInt("key"), is(1));
+    }
+
+    @Test
+    public void shouldReturnTrueIfIsSubConfig() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> subMap = new HashMap<String, Object>();
+        map.put("key", subMap);
+        subMap.put("subkey", "value");
+
+        SimpleConfig config = new SimpleConfig(map, "basePath");
+        assertTrue(config.isSimpleConfig("key"));
+
+        WinstonConfig subConfig = config.getSubConfig("key");
+        assertFalse(subConfig.isSimpleConfig("subkey"));
     }
 }

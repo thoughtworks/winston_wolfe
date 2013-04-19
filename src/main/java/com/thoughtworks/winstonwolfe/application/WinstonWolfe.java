@@ -11,8 +11,10 @@ import com.thoughtworks.winstonwolfe.endpoint.ScriptEndPointFactory;
 import com.thoughtworks.winstonwolfe.reporting.HtmlReport;
 import com.thoughtworks.winstonwolfe.runner.CommandLineArguments;
 import com.thoughtworks.winstonwolfe.script.Script;
+import com.thoughtworks.winstonwolfe.validators.ExactMatchValidatorFactory;
 import com.thoughtworks.winstonwolfe.validators.ReportingValidatorFactory;
 import com.thoughtworks.winstonwolfe.validators.ResponseValidatorFactory;
+import com.thoughtworks.winstonwolfe.validators.SelectorMatchValidatorFactory;
 
 public class WinstonWolfe {
     public static void main(final String[] args) throws Exception {
@@ -30,7 +32,10 @@ public class WinstonWolfe {
         DataSourceFactory dataSourceFactory = new DataSourceFactory(scriptConfig);
         DataSource requestDataSource = dataSourceFactory.buildDataSource();
 
-        ResponseValidatorFactory validatorFactory = new ResponseValidatorFactory(scriptConfig);
+        ExactMatchValidatorFactory exactMatchValidatorFactory = new ExactMatchValidatorFactory(scriptConfig);
+        SelectorMatchValidatorFactory selectorMatchValidatorFactory = new SelectorMatchValidatorFactory(scriptConfig);
+
+        ResponseValidatorFactory validatorFactory = new ResponseValidatorFactory(scriptConfig, exactMatchValidatorFactory, selectorMatchValidatorFactory);
         ReportingValidatorFactory reportingValidatorFactory = new ReportingValidatorFactory(report,validatorFactory);
 
         Script script = new Script(reportingEndPointFactory, requestDataSource, reportingValidatorFactory);

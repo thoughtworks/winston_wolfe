@@ -16,4 +16,6 @@ public interface WinstonConfig {
     Map<String,String> getFlatStringMap();
 
     Integer getInt(String key);
+
+    boolean isSimpleConfig(String key);
 }

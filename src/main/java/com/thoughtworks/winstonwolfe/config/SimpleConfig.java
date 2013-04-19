@@ -27,13 +27,17 @@ public class SimpleConfig implements WinstonConfig {
         if (map.containsKey(key)) {
             Object result = map.get(key);
             if (!clazz.isInstance(result)) {
-                throw new RuntimeException(String.format("The configuration value for '%s' is not a %s.", key, clazz.getSimpleName()));
+                throw new RuntimeException(buildIncorrectTypeMessage(key, clazz));
             }
             return result;
         } else {
             throw new RuntimeException(String.format("The configuration key '%s' could not be found.", key));
         }
 
+    }
+
+    private String buildIncorrectTypeMessage(String key, Class clazz) {
+        return String.format("The configuration value for '%s' is not a %s.", key, clazz.getSimpleName());
     }
 
     @Override
@@ -68,6 +72,21 @@ public class SimpleConfig implements WinstonConfig {
 
     @Override
     public Integer getInt(String key) {
-        return (Integer) map.get(key);
+        return (Integer) typeSafeGet(key, Integer.class);
+    }
+
+    @Override
+    public boolean isSimpleConfig(String key) {
+        try {
+            getSubConfig(key);
+        } catch (RuntimeException e) {
+            if (e.getMessage().equals(buildIncorrectTypeMessage(key, Map.class))) {
+                return false;
+            } else {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return true;
     }
 }

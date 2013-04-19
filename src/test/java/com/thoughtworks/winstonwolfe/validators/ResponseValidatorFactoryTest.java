@@ -11,21 +11,12 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ResponseValidatorFactoryTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
-
-    @Test
-    public void shouldCreateExactMatchValidatorIfConfigSpecifiesAResponseFile() {
-        WinstonConfig config = mock(WinstonConfig.class);
-        when(config.exists("compare_response_to")).thenReturn(true);
-
-        ResponseValidatorFactory factory = new ResponseValidatorFactory(config);
-        ResponseValidator validator = factory.buildValidator();
-        assertThat(validator, is(instanceOf(ExactMatchValidator.class)));
-    }
 
     @Test
     public void shouldComplainIfNeitherResponseFileOrSelectorFilesAreSpecified() {
@@ -36,7 +27,7 @@ public class ResponseValidatorFactoryTest {
         when(config.exists("compare_response_to")).thenReturn(false);
         when(config.exists("response_selectors")).thenReturn(false);
 
-        ResponseValidatorFactory factory = new ResponseValidatorFactory(config);
+        ResponseValidatorFactory factory = new ResponseValidatorFactory(config, mock(ExactMatchValidatorFactory.class), mock(SelectorMatchValidatorFactory.class));
         factory.buildValidator();
     }
 
@@ -49,22 +40,35 @@ public class ResponseValidatorFactoryTest {
         when(config.exists("compare_response_to")).thenReturn(true);
         when(config.exists("response_selectors")).thenReturn(true);
 
-        ResponseValidatorFactory factory = new ResponseValidatorFactory(config);
+        ResponseValidatorFactory factory = new ResponseValidatorFactory(config, mock(ExactMatchValidatorFactory.class), mock(SelectorMatchValidatorFactory.class));
         factory.buildValidator();
     }
 
     @Test
-    public void shouldCreateSelectorMatchValidatorIfConfigDoesNotSpecifyAResponseFile() {
+    public void shouldBuildAExactMatchValidator() {
         WinstonConfig config = mock(WinstonConfig.class);
-        WinstonConfig subConfig = mock(WinstonConfig.class);
+        when(config.exists("compare_response_to")).thenReturn(true);
+        when(config.exists("response_selectors")).thenReturn(false);
+
+        ExactMatchValidatorFactory exactMatchValidatorFactory = mock(ExactMatchValidatorFactory.class);
+        SelectorMatchValidatorFactory selectorMatchValidatorFactory = mock(SelectorMatchValidatorFactory.class);
+
+        ResponseValidatorFactory factory = new ResponseValidatorFactory(config, exactMatchValidatorFactory, selectorMatchValidatorFactory);
+        factory.buildValidator();
+        verify(exactMatchValidatorFactory).buildValidator();
+    }
+
+    @Test
+    public void shouldBuildASelectorMatchValidation() {
+        WinstonConfig config = mock(WinstonConfig.class);
         when(config.exists("compare_response_to")).thenReturn(false);
         when(config.exists("response_selectors")).thenReturn(true);
-        when(config.getSubConfig("verify_response")).thenReturn(subConfig);
-        when(config.getSubConfig("response_selectors")).thenReturn(subConfig);
-        when(subConfig.getFlatStringMap()).thenReturn(new HashMap<String, String>());
 
-        ResponseValidatorFactory factory = new ResponseValidatorFactory(config);
-        ResponseValidator validator = factory.buildValidator();
-        assertThat(validator, is(instanceOf(SelectorMatchValidator.class)));
+        ExactMatchValidatorFactory exactMatchValidatorFactory = mock(ExactMatchValidatorFactory.class);
+        SelectorMatchValidatorFactory selectorMatchValidatorFactory = mock(SelectorMatchValidatorFactory.class);
+
+        ResponseValidatorFactory factory = new ResponseValidatorFactory(config, exactMatchValidatorFactory, selectorMatchValidatorFactory);
+        factory.buildValidator();
+        verify(selectorMatchValidatorFactory).buildValidator();
     }
 }
