@@ -12,8 +12,8 @@ public class SelectorMatchValidatorFactory {
     }
 
     public SelectorMatchValidator buildValidator() {
-        Map<String, String> selectors = config.getSubConfig("response_selectors").getFlatStringMap();
-        Map<String, String> response_expectations = config.getSubConfig("verify_response").getFlatStringMap();
+        WinstonConfig response_expectations = config.getSubConfig("verify_response");
+        WinstonConfig selectors = config.getSubConfig("response_selectors");
 
         return new SelectorMatchValidator(selectors, response_expectations);
     }

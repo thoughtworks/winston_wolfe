@@ -3,7 +3,7 @@ send_to: mock_endpoint
 verify_response:
   Item:
     Name: Roger
-    Age: 36
+    Age: "36"
     IsAvailable: Y
 
 response_selectors:
@@ -12,6 +12,6 @@ response_selectors:
   IsAvailable: /Envelope/Body/ServiceabilityLevel5Response/ServiceabilityLevel5Response/Item/IsAvailable
   Item:
     root: /Envelope/Body/ServiceabilityLevel5Response/ServiceabilityLevel5Response/Item
-    Name: /Name
-    Age: /Age
-    IsAvailable: /IsAvailable
+    Name: Name
+    Age: Age
+    IsAvailable: IsAvailable

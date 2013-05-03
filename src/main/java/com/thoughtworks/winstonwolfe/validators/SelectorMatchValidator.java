@@ -1,58 +1,37 @@
 package com.thoughtworks.winstonwolfe.validators;
 
+import com.thoughtworks.winstonwolfe.config.WinstonConfig;
 import com.thoughtworks.winstonwolfe.datasource.DataSource;
 import org.w3c.dom.Document;
 
-import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 public class SelectorMatchValidator implements ResponseValidator {
-    private final Map<String, String> expectations;
-    private final Map<String, String> selectors;
+    private final WinstonConfig expectations;
+    private final WinstonConfig selectors;
 
-    public SelectorMatchValidator(Map<String, String> selectors, Map<String, String> expectations) {
+    public SelectorMatchValidator(WinstonConfig selectors, WinstonConfig expectations) {
         this.selectors = selectors;
         this.expectations = expectations;
     }
 
     @Override
     public ValidationResults validateAgainst(DataSource actualResponseDataSource) {
-        List<String> successMessages = new ArrayList<String>();
-        List<String> failureMessages = new ArrayList<String>();
+        ValidationResults results = new ValidationResults();
+        for (String key : expectations.getMap().keySet()) {
+            ValidationFactory validatorFactory = new ValidationFactory(actualResponseDataSource.getDocument(), key, expectations, selectors, "");
 
-        Document document = actualResponseDataSource.getDocument();
-        XPath xpath = XPathFactory.newInstance().newXPath();
-
-        for (String key : expectations.keySet()) {
             try {
-                String expectedValue = expectations.get(key);
+                Validation validation = validatorFactory.buildValidation();
+                validation.validate();
 
-                String selector = selectors.get(key);
-                if (selector == null) {
-                    failureMessages.add(String.format("Expected '%s' to be '%s' but no selector called '%s' was supplied", key, expectedValue, key));
-                    continue;
-                }
-                String result = xpath.evaluate(selector, document);
-                if (result.isEmpty()) {
-                    failureMessages.add(String.format("The Xpath identified as '%s' does not exist in the response", key));
-                    continue;
-                }
-                if (!result.equals(expectedValue)) {
-                    failureMessages.add(String.format("Expected '%s' for '%s' but found '%s'", expectedValue, key, result));
-                    continue;
-                }
-                successMessages.add(String.format("Found '%s' for '%s'", result, key));
+                results.addValidationResults(validation.getResults());
             } catch (XPathExpressionException e) {
                 e.printStackTrace();
-                failureMessages.add(String.format("The xpath '%s' is not valid. Refer to the horrible stack trace on the console.", key));
+                results.getFailureMessages().add(String.format("The xpath '%s' is not valid. Refer to the horrible stack trace on the console.", key));
             }
-
         }
-        return new ValidationResults(successMessages, failureMessages);
+
+        return results;
     }
 }
