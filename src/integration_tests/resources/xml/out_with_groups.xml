@@ -22,6 +22,42 @@
                     <IsAvailable>N</IsAvailable>
                     <Age>36</Age>
                 </Item>
+                <Nested>
+                    <Rejected>false</Rejected>
+                    <Item>
+                        <Name>Roger</Name>
+                        <IsAvailable>Y</IsAvailable>
+                        <Age>36</Age>
+                    </Item>
+                    <Item>
+                        <Name>Walter</Name>
+                        <IsAvailable>Y</IsAvailable>
+                        <Age>36</Age>
+                    </Item>
+                    <Item>
+                        <Name>Roger</Name>
+                        <IsAvailable>N</IsAvailable>
+                        <Age>36</Age>
+                    </Item>
+                </Nested>
+                <Nested>
+                    <Rejected>true</Rejected>
+                    <Item>
+                        <Name>Roger</Name>
+                        <IsAvailable>Y</IsAvailable>
+                        <Age>36</Age>
+                    </Item>
+                    <Item>
+                        <Name>Walter</Name>
+                        <IsAvailable>Y</IsAvailable>
+                        <Age>36</Age>
+                    </Item>
+                    <Item>
+                        <Name>Roger</Name>
+                        <IsAvailable>N</IsAvailable>
+                        <Age>36</Age>
+                    </Item>
+                </Nested>
             </ServiceabilityLevel5Response>
         </bwns:ServiceabilityLevel5Response>
     </SOAP-ENV:Body>

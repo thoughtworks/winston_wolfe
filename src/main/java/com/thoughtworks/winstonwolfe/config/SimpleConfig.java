@@ -33,7 +33,18 @@ public class SimpleConfig implements WinstonConfig {
         } else {
             throw new RuntimeException(String.format("The configuration key '%s' could not be found.", key));
         }
+    }
 
+    protected boolean isType(String key, Class clazz) {
+        if (map.containsKey(key)) {
+            Object result = map.get(key);
+            if (!clazz.isInstance(result)) {
+                return false;
+            }
+            return true;
+        } else {
+            throw new RuntimeException(String.format("The configuration key '%s' could not be found.", key));
+        }
     }
 
     private String buildIncorrectTypeMessage(String key, Class clazz) {
@@ -65,6 +76,10 @@ public class SimpleConfig implements WinstonConfig {
     public Map<String, String> getFlatStringMap() {
         Map<String, String> results = new HashMap<String,String>();
         for (String key : map.keySet()) {
+            if (!isType(key, String.class)) {
+                continue;
+            }
+
             results.put(key, getString(key));
         }
         return results;

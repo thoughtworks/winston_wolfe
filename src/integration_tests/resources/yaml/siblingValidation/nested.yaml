@@ -1,0 +1,19 @@
+read: ../../xml/original_in_message.xml
+send_to: mock_endpoint
+verify_response:
+  Nested:
+    Rejected: "false"
+    Item:
+      Name: Roger
+      Age: "36"
+      IsAvailable: Y
+
+response_selectors:
+  Nested:
+    root: /Envelope/Body/ServiceabilityLevel5Response/ServiceabilityLevel5Response/Nested
+    Rejected: Rejected
+    Item:
+      root: Item
+      Name: Name
+      Age: Age
+      IsAvailable: IsAvailable

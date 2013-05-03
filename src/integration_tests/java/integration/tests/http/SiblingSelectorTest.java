@@ -30,7 +30,15 @@ public class SiblingSelectorTest {
     @Test
     public void selectorMatchPasses() throws Exception {
         URL config = ClassLoader.getSystemResource("yaml/http_config.yaml");
-        URL script = ClassLoader.getSystemResource("yaml/siblingValidation/test.yaml");
+        URL script = ClassLoader.getSystemResource("yaml/siblingValidation/simple.yaml");
+
+        WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
+    }
+
+    @Test
+    public void nestedSelectorMatchPasses() throws Exception {
+        URL config = ClassLoader.getSystemResource("yaml/http_config.yaml");
+        URL script = ClassLoader.getSystemResource("yaml/siblingValidation/nested.yaml");
 
         WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
     }

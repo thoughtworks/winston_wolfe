@@ -95,29 +95,17 @@ public class SimpleConfigTest {
     }
 
     @Test
-    public void getFLatStringMapShouldComplainIfConfigIsNotFlat() {
-
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("The configuration value for 'key' is not a String.");
-
+    public void getFlatStringMapShouldIgnoreNonStringProperties() {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("key", new HashMap());
+        map.put("number", 8);
+        map.put("string", "hello");
 
         SimpleConfig config = new SimpleConfig(map, "basePath");
-        config.getFlatStringMap();
-    }
+        Map<String, String> flatStringMap = config.getFlatStringMap();
 
-    @Test
-    public void getFLatStringMapShouldComplainIfConfigIsNotAllStrings() {
-
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("The configuration value for 'key' is not a String.");
-
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("key", 8);
-
-        SimpleConfig config = new SimpleConfig(map, "basePath");
-        config.getFlatStringMap();
+        assertThat(flatStringMap.get("string"), is("hello"));
+        assertThat(flatStringMap.size(), is(1));
     }
 
     @Test
