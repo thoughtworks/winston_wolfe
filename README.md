@@ -142,25 +142,30 @@ Some notes:
 # The Future
 These are ideas, in no order, with no promises:
 
-- WSDL/XSD generation for request documents (probably a standalone tool)
-- Natural language input (today, a number, etc)
-- Natural language validation (exists, occurs twice)
-- Externalised 'apply changes' and 'verify response' values for sharing
-- Sharing values between request and response
-- Chaining Tests into a larger scenario
-- File as target, write changes applied to request to a file
-- DB as source, source values for changes and verification from a database
-- File as source, source values from a file
-- Command line arguments as source of values
-- Sibling selector validation - verify an element has value when siblings have specified values
-- Parameterised selectors - select element where aspect is driven from input value
-- Support for auto-stub configuration
-- Modularised environment configuration
-- Better YAML data type support
-- XML namespace support for nested namespaces
-- XML namespace support (special case: redefining a namespace)
-- Better command line error handling
-- JUnit report output
-- Pre-test validation of script to limit wasted test runs
-- Better handling of tabs and case sensitivity in YAML files
-- Response queue on separate infrastructure
+- In order to *increase* **the systems we can test**, we will *support* **HTTPS endpoints for both requests and responses**
+- In order to *increase* **the number of systems we can verify**, we will *support* **JDBC as a dataset provider**
+- In order to *increase* **the number of systems we can verify**, we will *support* **Splunk**
+- In order to *reduce* **the effort required in creating input xml**, we will *generate* **xml from XSDs**
+- In order to *reduce* **the effort required in creating input xml**, we will *generate* **xml from the WSDL**
+- In order to *reduce* **manual effort required in stub configuration**, we will *support* **a model for auto stub configuration**
+- In order to *reduce* **time wasted running invalid tests**, we will *validate* **tests scripts before executing the test**
+- In order to *improve* **usability writing test validation**, we will *support* **natural language terms like 'exists' and 'occurs twice' for validating results**
+- In order to *improve* **data input usability**, we will *support* **natural language input terms like 'today' and 'a number'**
+- In order to *increase* **the modularisation of test scripts**, we will *read* **input values from a file for use in test scripts**
+- In order to *increase* **the modularisation of test scripts**, we will *read* **input values from a db dataset for use in test scripts**
+- In order to *increase* **the modularisation of test scripts**, we will *read* **input values from the command line and use them in test scripts**
+- In order to *increase* **the reusability of test setup**, we will *allow* **requests to be sent to the file system instead of a service**
+- In order to *increase* **the range of test that can be run**, we will *support* **chaining of steps in to a single script**
+- In order to *reduce* **test script complexity**, we will *support* **sharing of input values between request and response**
+- In order to *reduce* **a test's dependency on specific data**, we will *allow* **parameterisation of selectors**
+- In order to *reduce* **duplication of effort across tests**, we will *allow* **values to be externalised in modules**
+- In order to *reduce* **configuration effort**, we will *allow* **modularised environment configuration**
+- In order to *improve* **feedback about misconfiguration**, we will *provide* **command line error handling**
+- In order to *increase* **the range of systems we can support**, we will *support* **XML namespace redefinition**
+- In order to *increase* **the range of systems we can support**, we will *support* **nested XML namespaces**
+- In order to *better* **handle YAML's implicit typing**, we will *convert* **all values to a string**
+- In order to *better* **integrate with existing tools**, we will *provide* **reports in jUnit format**
+- In order to *improve* **reporting of case-separate duplicate keys**, we will *preprocess* **files to remove case**
+- In order to *improve* **error reporting**, we will *replace* **YAMLs handling of tab characters**
+- In order to *increase* **the number of supported systems**, we will *support* **responses from multiple queues**
+- In order to *increase* **the number of supported systems**, we will *support* **responses from queues on separate infrastructure**
