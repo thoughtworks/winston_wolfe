@@ -1,0 +1,4 @@
+root: ./Item
+Name: ./Name
+Age: ./Age
+IsAvailable: ./IsAvailable

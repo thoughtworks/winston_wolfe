@@ -56,7 +56,7 @@ public class RecursiveSiblingValidation implements Validation {
             }
 
             if (resultsForNode.hasFailure()) {
-                break;
+                continue;
             }
 
             siblingIsValid = true;

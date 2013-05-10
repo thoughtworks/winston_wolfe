@@ -21,19 +21,13 @@ public class ValidationFactory {
     }
 
     public Validation buildValidation() throws XPathExpressionException {
-        ValidationResults childResults;
-
         if (expectations.isSimpleConfig(key)) {
             return new RecursiveSiblingValidation(node, key, expectations, selectors, xpath);
-//            childResults = siblingExpectationValidation(parentNode, key, parentExpectations, parentSelectors, parentXpath);
         } else {
             String expectedValue = expectations.getFlatStringMap().get(key);
             String selector = selectors.getFlatStringMap().get(key);
 
             return new SimpleSelectorValidation(node, key, expectedValue, selector);
-//            simpleSelectorValidation.validate();
-//            childResults = simpleSelectorValidation.results;
         }
-//        results.addValidationResults(childResults);
     }
 }

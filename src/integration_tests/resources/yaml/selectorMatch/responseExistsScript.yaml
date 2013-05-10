@@ -2,5 +2,7 @@ read: ../../xml/in.xml
 send_to: mock_endpoint
 verify_response:
   is_available: Y
+
+
 response_selectors:
   is_available: /Envelope/Body/ServiceabilityLevel5Response/ServiceabilityLevel5Response/IsAvailable

@@ -13,7 +13,5 @@ response_selectors:
     root: /Envelope/Body/ServiceabilityLevel5Response/ServiceabilityLevel5Response/Nested
     Rejected: ./Rejected
     Item:
-      root: ./Item
-      Name: ./Name
-      Age: ./Age
-      IsAvailable: ./IsAvailable
+      import_files:
+        - nested_item.yaml

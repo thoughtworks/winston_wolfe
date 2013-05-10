@@ -2,12 +2,11 @@ package integration.tests.http;
 
 import com.thoughtworks.winstonwolfe.application.WinstonWolfe;
 import com.thoughtworks.winstonwolfe.datasource.ApplyChangesDataSource;
-import com.thoughtworks.winstonwolfe.datasource.FileDataSource;
 import com.thoughtworks.winstonwolfe.datasource.StringDataSource;
+import infrastructure.MockSystemUnderTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import infrastructure.MockSystemUnderTest;
 
 import java.io.File;
 import java.io.IOException;

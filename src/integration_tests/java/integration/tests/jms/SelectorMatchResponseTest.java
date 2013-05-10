@@ -2,7 +2,6 @@ package integration.tests.jms;
 
 import com.thoughtworks.winstonwolfe.application.WinstonWolfe;
 import infrastructure.MockJMSBasedSystemUnderTest;
-import infrastructure.MockSystemUnderTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

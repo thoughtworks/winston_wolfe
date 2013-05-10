@@ -43,6 +43,14 @@ public class SiblingSelectorTest {
         WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
     }
 
+    @Test
+    public void nestedSelectorWithImportsMatchPasses() throws Exception {
+        URL config = ClassLoader.getSystemResource("yaml/http_config.yaml");
+        URL script = ClassLoader.getSystemResource("yaml/siblingValidation/nested_with_import.yaml");
+
+        WinstonWolfe.main(new String[]{config.getPath(), script.getPath()});
+    }
+
     private String getResourceFileContents(String filename) throws IOException {
         URL url = ClassLoader.getSystemResource(filename);
 

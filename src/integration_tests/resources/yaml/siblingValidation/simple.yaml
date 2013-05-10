@@ -12,6 +12,6 @@ response_selectors:
   IsAvailable: /Envelope/Body/ServiceabilityLevel5Response/ServiceabilityLevel5Response/Item/IsAvailable
   Item:
     root: /Envelope/Body/ServiceabilityLevel5Response/ServiceabilityLevel5Response/Item
-    Name: Name
-    Age: Age
-    IsAvailable: IsAvailable
+    Name: ./Name
+    Age: ./Age
+    IsAvailable: ./IsAvailable

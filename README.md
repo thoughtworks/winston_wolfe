@@ -169,3 +169,9 @@ These are ideas, in no order, with no promises:
 - In order to *improve* **error reporting**, we will *replace* **YAMLs handling of tab characters**
 - In order to *increase* **the number of supported systems**, we will *support* **responses from multiple queues**
 - In order to *increase* **the number of supported systems**, we will *support* **responses from queues on separate infrastructure**
+
+
+error loop for recursive loops in YAML loading
+API for consumers like Concordion.
+Highlight in the XML response the passes and failures (if possible)
+node is absent
