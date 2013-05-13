@@ -1,0 +1,3 @@
+read: input.xml
+send_to: mirror_endpoint
+compare_response_to: output.xml
