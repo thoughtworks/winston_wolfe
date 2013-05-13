@@ -32,6 +32,9 @@ task integrationTest(type: Test) {
 }
 
 mainClassName = 'com.thoughtworks.winstonwolfe.application.WinstonWolfe'
+distZip {
+    baseName = 'WinstonWolfe'
+}
 
 idea {
     project {
