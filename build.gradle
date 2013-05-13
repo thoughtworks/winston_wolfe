@@ -1,6 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'idea'
+apply from: 'telstra.gradle'
 
 sourceCompatibility = "1.6"
 
