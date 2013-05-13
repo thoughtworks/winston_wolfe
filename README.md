@@ -171,7 +171,9 @@ These are ideas, in no order, with no promises:
 - In order to *increase* **the number of supported systems**, we will *support* **responses from queues on separate infrastructure**
 
 
-error loop for recursive loops in YAML loading
-API for consumers like Concordion.
-Highlight in the XML response the passes and failures (if possible)
-node is absent
+- error loop for recursive loops in YAML loading
+- API for consumers like Concordion.
+- Highlight in the XML response the passes and failures (if possible)
+- node is absent
+- setup dependency managemetn
+- Provide a simple standalone HTTP and JMS queue to easily allow trying out the tool (include yaml tests and endpoint configs)
