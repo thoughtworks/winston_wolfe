@@ -40,6 +40,7 @@ jar {
 
 distZip {
     baseName = 'winston-wolfe'
+    version = ""
 }
 
 startScripts {
