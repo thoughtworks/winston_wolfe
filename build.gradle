@@ -32,8 +32,17 @@ task integrationTest(type: Test) {
 }
 
 mainClassName = 'com.thoughtworks.winstonwolfe.application.WinstonWolfe'
+jar {
+    baseName = 'winston-wolfe'
+    version = '0.0.1'
+}
+
 distZip {
-    baseName = 'WinstonWolfe'
+    baseName = 'winston-wolfe'
+}
+
+startScripts {
+    applicationName = "winston-wolfe"
 }
 
 idea {
