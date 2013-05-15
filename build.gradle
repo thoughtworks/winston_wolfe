@@ -1,6 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'idea'
+apply plugin: 'eclipse'
 apply from: 'telstra.gradle'
 
 sourceCompatibility = "1.6"
@@ -45,6 +46,12 @@ distZip {
 
 startScripts {
     applicationName = "winston-wolfe"
+}
+
+eclipse {
+    project {
+        name = 'winston_wolfe'
+    }
 }
 
 idea {
