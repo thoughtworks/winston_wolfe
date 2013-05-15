@@ -14,6 +14,7 @@ import static junit.framework.Assert.fail;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.matchers.JUnitMatchers.either;
 import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -100,9 +101,6 @@ public class MultiFileConfigTest {
 
     @Test
     public void shouldThrowABetterErrorWhenAFileCantBeFound() throws FileNotFoundException {
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Couldn't find file 'basePath/path/to/non-existent/file (No such file or directory)' referenced by configuration key 'response_selectors'");
-
         List<String> file_names = new ArrayList<String>();
         file_names.add("path/to/non-existent/file");
 
@@ -113,7 +111,16 @@ public class MultiFileConfigTest {
 
         ConfigLoader loader = new YamlConfigLoader();
 
-        MultiFileConfig config = new MultiFileConfig(map, "basePath", loader);
-        config.getSubConfig("response_selectors");
+        try {
+            MultiFileConfig config = new MultiFileConfig(map, "basePath", loader);
+            config.getSubConfig("response_selectors");
+        } catch(RuntimeException e) {
+            String message = e.getMessage();
+
+            String unix = "Couldn't find file 'basePath/path/to/non-existent/file (No such file or directory)' referenced by configuration key 'response_selectors'";
+            String windows = "Couldn't find file 'basePath\\path\\to\\non-existent\\file (No such file or directory)' referenced by configuration key 'response_selectors'";
+
+            assertThat(message, either(is(unix)).or(is(windows)));
+        }
     }
 }

@@ -171,9 +171,9 @@ These are ideas, in no order, with no promises:
 - In order to *increase* **the number of supported systems**, we will *support* **responses from queues on separate infrastructure**
 
 
-- error loop for recursive loops in YAML loading
-- API for consumers like Concordion.
-- Highlight in the XML response the passes and failures (if possible)
-- node is absent
-- setup dependency managemetn
-- Provide a simple standalone HTTP and JMS queue to easily allow trying out the tool (include yaml tests and endpoint configs)
+- In order to *better* **handle YAML file parsing**, we will *abort* **when recursive file import loops are detected**
+- In order to *better* **integrate with other tools**, we will *provide* **a Java API**
+- In order to *improve* **readability of test results**, we will *highlight* **passing and failing nodes in the response XML**
+- In order to *improve* **usability of writing test validation**, we will *allow* **the absence of a node to be validated**
+- In order to *improve* **dependency management**, we will *support* **automated maven dependencies in gradle**
+- In order to *improve* **the getting started experience**, we will *provide* **a simple JMS service**
